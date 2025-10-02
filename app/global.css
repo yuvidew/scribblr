@@ -1,3 +1,46 @@
-@tailwind base;
+﻿@tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.font-jakarta {
+    font-family: "Jakarta", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.font-jakarta-bold {
+    font-family: "Jakarta-Bold";
+    src: url("assets/fonts/PlusJakartaSans-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+}
+
+.font-jakarta-extra-bold {
+    font-family: "Jakarta-ExtraBold", sans-serif;
+    font-weight: 800;
+    font-style: normal;
+}
+
+.font-jakarta-extra-light {
+    font-family: "Jakarta-ExtraLight", sans-serif;
+    font-weight: 200;
+    font-style: normal;
+}
+
+.font-jakarta-light {
+    font-family: "Jakarta-Light", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+
+.font-jakarta-medium {
+    font-family: "Jakarta-Medium", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.font-jakarta-semi-bold {
+    font-family: "Jakarta-SemiBold", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+}
