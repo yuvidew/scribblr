@@ -2,6 +2,12 @@ import {  Animated } from 'react-native'
 import React, { useEffect, useRef } from 'react'
 import { icons } from '../constants/icons';
 
+interface Props { 
+    loading: boolean 
+    color? : string,
+    size? :  "lg" | "sm" | "md" 
+}
+
 /**
  * Spinner component that displays a rotating loader icon when loading is true.
  *
@@ -11,7 +17,20 @@ import { icons } from '../constants/icons';
  */
 
 
-const Spinner = ({ loading }: { loading: boolean }) => {
+const getSizeStyle = (variant : "lg" | "sm" | "md" ) => {
+    switch (variant) {
+        case "lg":
+            return {width : 35 , height : 35 }
+        case "md":
+            return {width : 30 , height : 30 }
+        case "sm":
+            return {width : 25 , height : 25 }
+        default:
+            return {width : 20 , height : 20 };
+    }
+}
+
+const Spinner = ({ loading , color = "#fff" , size = "md"}: Props) => {
     const rotateAnim = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
@@ -36,9 +55,9 @@ const Spinner = ({ loading }: { loading: boolean }) => {
     return (
         <Animated.Image
             source={icons.loader}
-            style={[{ transform: [{ rotate: rotateInterpolate }] }]}
-            tintColor="#fff"
-            className={"size-6"}
+            style={[{ transform: [{ rotate: rotateInterpolate }] } , getSizeStyle(size)]}
+            tintColor={color}
+            
         />
     )
 }

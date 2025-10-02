@@ -77,14 +77,13 @@ const WelcomeScreen = () => {
                 />
 
                 <CustomButton
-                    title={isLastSlide ? "Get Stared" : "Next"}
+                    title={isLastSlide ? "Get Start" : "Next"}
                     rounded="full"
                     bgVariant="primary"
-                    textVariant="secondary"
                     width="half"
                     onPress={() =>
                         isLastSlide
-                            ? router.replace("/(auth)/sign-up")
+                            ? router.replace("/(auth)/select-auth-method-screen")
                             : swiperRef.current?.scrollBy(1)
                     }
                 />
