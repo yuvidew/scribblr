@@ -6,7 +6,7 @@ import { Image } from 'expo-image'
 import { useGetCountries } from '../hook/use-get-counties'
 import Spinner from '../../../components/Spinner'
 import { icons } from '../../../constants/icons';
-import CustomButton from '../../../components/CustomButton';
+import CustomButton from '@/components/CustomButton';
 const SelectCountry = () => {
     const { isLoading, isError, data } = useGetCountries();
 
@@ -20,7 +20,53 @@ const SelectCountry = () => {
 
     return (
         <View style={styles.container}>
+            {/* start to title or description */}
+            <View style={styles.container_description}>
+                <Text style={styles.title}>
+                    Which country are you from ? 🏳️
+                </Text>
 
+                <Text style={styles.description}>
+                    Please select your country of origin for a better recommendations.
+                </Text>
+            </View>
+            {/* end to title or description */}
+
+            {/* start to search box */}
+            <SearchBox
+                placeholder='Search country'
+                value={searchValue}
+                onChangeText={(value) => setSearchValue(value)}
+            />
+            {/* end to search box */}
+
+            {/* <View style = {{po}}></View> */}
+            <CustomButton title='Continue' />
+
+            {/* {isLoading ? (
+                <View style={styles.loading_container}>
+                    <Spinner loading color={color.primary[700]} />
+                </View>
+            ) : (isError && data?.length === 0) ? (
+                <View style={styles.empty_country}>
+                    <Image
+                        source={icons.emptyCountry}
+                        style={{
+                            width: 100,
+                            height: 100
+                        }}
+                        resizeMode="contain"
+                    />
+
+                    <View style={styles.alert_message_box}>
+                        <Text style={[styles.alert_message, { color: color.secondary[800] }]}>
+                            We couldn’t find a count for
+                        </Text>
+                        <Text style={[styles.alert_message, { color: color.primary[800] }]}>{searchValue}</Text>
+                    </View>
+                </View>
+            ) : (
+            )} */}
             <FlatList
                 data={filterCountry}
                 keyExtractor={(item, idx) => `${item.name}-${idx}`}
@@ -44,7 +90,7 @@ const SelectCountry = () => {
                         <View style={styles.loading_container}>
                             <Spinner loading color={color.primary[700]} />
                         </View>
-                    ) : isError ? (
+                    ) : isError ?(
                         <View style={styles.empty_country}>
                             <Image
                                 source={icons.emptyCountry}
@@ -65,34 +111,9 @@ const SelectCountry = () => {
                     ) : null
                 }
                 ListHeaderComponent={
-                    <View style = {{gap : 20}}>
-                        {/* start to title or description */}
-                        <View style={styles.container_description}>
-                            <Text style={styles.title}>
-                                Which country are you from ? 🏳️
-                            </Text>
-
-                            <Text style={styles.description}>
-                                Please select your country of origin for a better recommendations.
-                            </Text>
-                        </View>
-                        {/* end to title or description */}
-
-                        {/* start to search box */}
-                        <SearchBox
-                            placeholder='Search country'
-                            value={searchValue}
-                            onChangeText={(value) => setSearchValue(value)}
-                        />
-                        {/* end to search box */}
-
-                        {/* <View style = {{position : "absolute" , bottom : 0 , left : 0}}>
-                            <CustomButton title='Continue' />
-                        </View> */}
+                    <View>
                     </View>
                 }
-
-                ListFooterComponent={<CustomButton title='Continue' />}
             />
         </View>
     )
@@ -105,7 +126,7 @@ const styles = StyleSheet.create({
         flex: 1,
         display: "flex",
         backgroundColor: "#fff",
-        // position: "relative",
+        position: "relative",
         padding: 12,
         gap: 25,
     },
