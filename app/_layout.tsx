@@ -1,6 +1,7 @@
 import { SplashScreen, Stack } from "expo-router";
 import { useFonts } from 'expo-font';
 import { useEffect } from "react";
+import { QueryClientProviderComp } from "../components/providers/query-client-provider";
 
 export default function RootLayout() {
   const [loaded] = useFonts({
@@ -21,19 +22,21 @@ export default function RootLayout() {
 
   if (!loaded) return null;
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen
-        name="(auth)"
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="(root)"
-        options={{
-          headerShown: false,
-        }}
-      />
-    </Stack>
+    <QueryClientProviderComp>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen
+          name="(auth)"
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="(root)"
+          options={{
+            headerShown: false,
+          }}
+        />
+      </Stack>
+    </QueryClientProviderComp>
   );
 }
