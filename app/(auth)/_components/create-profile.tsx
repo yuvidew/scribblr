@@ -165,8 +165,8 @@ const CreateProfile = ({onProgressState} : Props) => {
                 />
 
                 <InputField
-                    label='Full Name'
-                    placeholder='Full Name'
+                    label='Date of Birth'
+                    placeholder='Date of Birth'
                     isSelectDate
                     selectedDate={form.bod}
                     onChangeDate={(value) => setForm((prev) => ({
