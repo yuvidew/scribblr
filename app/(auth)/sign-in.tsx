@@ -4,10 +4,12 @@ import { Link, Redirect } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const SignInScreen = () => {
+
     return (
-        <SafeAreaView style = {styles.container}>
-            <Link href={"/(auth)/sign-up"} >sign in</Link  >
-        </SafeAreaView>
+        // <SafeAreaView style = {styles.container}>
+        //     <Link href={"/(auth)/sign-up"} >sign in</Link  >
+        // </SafeAreaView>
+        <Redirect href={"/(auth)/sign-up"} />
     )
 }
 
