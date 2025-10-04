@@ -30,14 +30,14 @@ interface Props {
 const CreateProfile = ({onProgressState} : Props) => {
     const [form, setForm] = useState<{
         image : string,
-        bod : Date | undefined,
+        dob : Date | undefined,
         fullname : string,
         gender : string,
         about : string,
         phoneNo : string,
     }>({
         image: "",
-        bod : new Date(),
+        dob : new Date(),
         fullname : "",
         gender : "",
         about : "",
@@ -168,10 +168,10 @@ const CreateProfile = ({onProgressState} : Props) => {
                     label='Date of Birth'
                     placeholder='Date of Birth'
                     isSelectDate
-                    selectedDate={form.bod}
+                    selectedDate={form.dob}
                     onChangeDate={(value) => setForm((prev) => ({
                         ...prev,
-                        bod : value
+                        dob : value
                     }))}
                 />
 
