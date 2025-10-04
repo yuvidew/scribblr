@@ -2,6 +2,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  Text
 } from "react-native";
 import React, {useState } from "react";
 import { router } from "expo-router";
@@ -10,11 +11,12 @@ import { Image } from "expo-image";
 import { icons } from "../../constants/icons";
 import { color } from "../../constants/colors";
 import SelectCountry from "./_components/select-country";
+import CreateProfile from "./_components/create-profile";
 
 const SignupScreen = () => {
   const [progressState, setProgressState] = useState<
     "country" | "profile" | "sign-up"
-  >("country");
+  >("profile");
 
   return (
     <SafeAreaView style={styles.container}>
@@ -49,8 +51,13 @@ const SignupScreen = () => {
         </View>
       </View>
       {/* end to back arrow and progress bar */}
-
-      <SelectCountry/>
+      {progressState === "country" ? (
+        <SelectCountry onProgressState={() => setProgressState("profile")}/>
+      ) : progressState === "profile" ? (
+        <CreateProfile onProgressState={() => setProgressState("sign-up")}/>
+      ) : (
+        <Text>Sign - up</Text>
+      )} 
     </SafeAreaView>
   );
 };

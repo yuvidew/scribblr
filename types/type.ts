@@ -1,3 +1,6 @@
+import { ImageStyle } from "expo-image";
+import { StyleProp, TextInputProps, TextStyle, ViewStyle } from "react-native";
+
 export type ButtonProps = {
     title: string;
     bgVariant?: "primary" | "secondary" | "danger" | "outline" | "success";
@@ -6,10 +9,10 @@ export type ButtonProps = {
     IconRight?: any
     className?: string;
     loading?: boolean;
-    disabled? : boolean;
-    onPress? : () => void;
-    rounded? : "sm" | "lg" | "default" | "md" | "full",
-    width? : "full" | "half" | "icon"
+    disabled?: boolean;
+    onPress?: () => void;
+    rounded?: "sm" | "lg" | "default" | "md" | "full",
+    width?: "full" | "half" | "icon"
 };
 
 export type Country = {
@@ -46,3 +49,24 @@ export type CountryListType = {
     value: string;
     openStreetMap: string;
 };
+
+export interface InputFieldProps extends TextInputProps {
+    label: string;
+    isPassword?: boolean;
+    secureTextEntry?: boolean;
+    labelStyle?: StyleProp<TextStyle>;
+    containerStyle?: StyleProp<ViewStyle>;
+    inputStyle?: StyleProp<TextStyle>;
+    iconStyle?: StyleProp<ImageStyle>;
+    className?: string;
+    icon?: any;
+    isSelectDate? : boolean,
+    onChangeDate? : (value : Date) => void,
+    selectedDate? : Date,
+    isDropDown? : boolean,
+    options? : {
+        option : string
+    }[],
+    selectedOption? : string,
+    onSelectedOption? : (value: string) => void,
+}

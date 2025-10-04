@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View, FlatList } from 'react-native'
+import { ScrollView, StyleSheet, Text, View, } from 'react-native'
 import React, { useMemo, useState } from 'react'
 import SearchBox from '../../../components/search-box'
 import { color } from '../../../constants/colors';
@@ -7,10 +7,37 @@ import { useGetCountries } from '../hook/use-get-counties'
 import Spinner from '../../../components/Spinner'
 import { icons } from '../../../constants/icons';
 import CustomButton from '../../../components/CustomButton';
-const SelectCountry = () => {
+
+interface Props {
+    onProgressState: () => void
+}
+
+/**
+ * SelectCountry - A screen that allows users to select their country from a searchable list.
+ *
+ * @param {Object} props - Component props.
+ * @param {() => void} props.onProgressState - Callback function invoked when the user taps "Continue".
+ *
+ * @example
+ * // Using inside a parent component with a progress step state
+ * const [progressState, setProgressState] = useState<
+ *   "country" | "profile" | "sign-up"
+ * >("profile");
+ * 
+ * <SelectCountry onProgressState={() => setProgressState("profile")} />
+ *
+ * The component displays:
+ * - A title and description at the top.
+ * - A searchable list of countries fetched via `useGetCountries` hook.
+ * - Loading spinner while data is fetching.
+ * - Empty state if no country matches the search.
+ * - A "Continue" button that triggers the `onProgressState` callback.
+ */
+
+const SelectCountry = ({ onProgressState }: Props) => {
+    // TODO : implement a api hook to submit the selected country
     const { isLoading, isError, data } = useGetCountries();
 
-    console.log("the country data", data?.length);
 
     const [searchValue, setSearchValue] = useState("")
 
@@ -20,26 +47,34 @@ const SelectCountry = () => {
 
     return (
         <View style={styles.container}>
+            <View style={{ gap: 20 }}>
+                {/* start to title or description */}
+                <View style={styles.container_description}>
+                    <Text style={styles.title}>
+                        Which country are you from ? 🏳️
+                    </Text>
 
-            <FlatList
-                data={filterCountry}
-                keyExtractor={(item, idx) => `${item.name}-${idx}`}
-                renderItem={({ item }) => (
-                    <View style={styles.country_box}>
-                        <Image
-                            source={{ uri: item.flag?.png ?? item.flag?.svg }}
-                            style={{ width: 40, height: 40 }}
-                            resizeMode="contain"
-                        />
-                        <Text style={styles.country_sign}>{item.name?.slice(0, 2).toUpperCase()}</Text>
-                        <Text style={styles.country_text}>{item.name.length > 20 ? `${item.name.slice(0, 20)}...` : item.name}</Text>
-                    </View>
-                )}
-                ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
-                contentContainerStyle={{ paddingVertical: 8 }}
-                showsVerticalScrollIndicator
-                keyboardShouldPersistTaps="handled"
-                ListEmptyComponent={
+                    <Text style={styles.description}>
+                        Please select your country of origin for a better recommendations.
+                    </Text>
+                </View>
+                {/* end to title or description */}
+
+                {/* start to search box */}
+                <SearchBox
+                    placeholder='Search country'
+                    value={searchValue}
+                    onChangeText={(value) => setSearchValue(value)}
+                />
+                {/* end to search box */}
+
+            </View>
+            <ScrollView
+                style={styles.country_list_container}
+                contentContainerStyle={styles.country_list_content}
+                showsVerticalScrollIndicator={false}
+            >
+                {
                     isLoading ? (
                         <View style={styles.loading_container}>
                             <Spinner loading color={color.primary[700]} />
@@ -62,38 +97,21 @@ const SelectCountry = () => {
                                 <Text style={[styles.alert_message, { color: color.primary[800] }]}>{searchValue}</Text>
                             </View>
                         </View>
-                    ) : null
-                }
-                ListHeaderComponent={
-                    <View style = {{gap : 20}}>
-                        {/* start to title or description */}
-                        <View style={styles.container_description}>
-                            <Text style={styles.title}>
-                                Which country are you from ? 🏳️
-                            </Text>
-
-                            <Text style={styles.description}>
-                                Please select your country of origin for a better recommendations.
-                            </Text>
+                    ) : filterCountry?.map((item, i) => (
+                        <View key={i} style={styles.country_box}>
+                            <Image
+                                source={{ uri: item.flag?.png ?? item.flag?.svg }}
+                                style={{ width: 40, height: 40 }}
+                                resizeMode="contain"
+                            />
+                            <Text style={styles.country_sign}>{item.name?.slice(0, 2).toUpperCase()}</Text>
+                            <Text style={styles.country_text}>{item.name.length > 20 ? `${item.name.slice(0, 20)}...` : item.name}</Text>
                         </View>
-                        {/* end to title or description */}
-
-                        {/* start to search box */}
-                        <SearchBox
-                            placeholder='Search country'
-                            value={searchValue}
-                            onChangeText={(value) => setSearchValue(value)}
-                        />
-                        {/* end to search box */}
-
-                        {/* <View style = {{position : "absolute" , bottom : 0 , left : 0}}>
-                            <CustomButton title='Continue' />
-                        </View> */}
-                    </View>
+                    ))
                 }
+            </ScrollView>
 
-                ListFooterComponent={<CustomButton title='Continue' />}
-            />
+            <CustomButton title='Continue' onPress={onProgressState} rounded="full" />
         </View>
     )
 }
@@ -127,8 +145,12 @@ const styles = StyleSheet.create({
 
     country_list_container: {
         flex: 1,
-        // height: "100%",
-        width: "100%"
+        width: "100%",
+    },
+
+    country_list_content: {
+        gap: 8,
+        paddingBottom: 24,
     },
 
     country_box: {
