@@ -6,6 +6,7 @@ const userUpload = require("@/assets/icons/user.png");
 const edit = require("@/assets/icons/edit.png");
 const calender = require("@/assets/icons/calendar.png");
 const downArrow = require("@/assets/icons/down-arrow.png");
+const SignUpUser = require("@/assets/icons/sign-up-su.png");
 
 const search = require("@/assets/icons/search.png");
 const emptyCountry = require("@/assets/icons/global-search.png");
@@ -24,5 +25,7 @@ export const icons = {
     openEye,
     closeEye,
     calender,
-    downArrow
+    downArrow,
+    SignUpUser
+
 }
