@@ -1,10 +1,5 @@
-import {
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Text
-} from "react-native";
-import React, {useState } from "react";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
 import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "expo-image";
@@ -12,11 +7,14 @@ import { icons } from "../../constants/icons";
 import { color } from "../../constants/colors";
 import SelectCountry from "./_components/select-country";
 import CreateProfile from "./_components/create-profile";
+import CreateAccount from "./_components/create-accout";
+import SelectInterestTopic from "./_components/select-interest-topic";
+import FollowPeople from "./_components/follow-people";
 
 const SignupScreen = () => {
   const [progressState, setProgressState] = useState<
-    "country" | "profile" | "sign-up"
-  >("profile");
+    "country" | "profile" | "sign-up" | "interest-topic" | "follow-peoples"
+  >("follow-peoples");
 
   return (
     <SafeAreaView style={styles.container}>
@@ -40,10 +38,14 @@ const SignupScreen = () => {
               {
                 width:
                   progressState === "country"
-                    ? "33.5%"
+                    ? "20%"
                     : progressState === "profile"
-                      ? "67%"
-                      : "100%",
+                      ? "40%"
+                      : progressState === "sign-up"
+                        ? "60%"
+                        : progressState === "interest-topic"
+                          ? "80%"
+                          : "100%",
               },
             ]}
           />
@@ -52,12 +54,16 @@ const SignupScreen = () => {
       </View>
       {/* end to back arrow and progress bar */}
       {progressState === "country" ? (
-        <SelectCountry onProgressState={() => setProgressState("profile")}/>
+        <SelectCountry onProgressState={() => setProgressState("profile")} />
       ) : progressState === "profile" ? (
-        <CreateProfile onProgressState={() => setProgressState("sign-up")}/>
-      ) : (
-        <Text>Sign - up</Text>
-      )} 
+        <CreateProfile onProgressState={() => setProgressState("sign-up")} />
+      ) : progressState === "sign-up" ? (
+        <CreateAccount onProgressState={() => setProgressState("interest-topic")} />
+      ) : progressState === "interest-topic" ? (
+        <SelectInterestTopic onProgressState={() => setProgressState("follow-peoples")} />
+      ) : progressState === "follow-peoples" &&  (
+        <FollowPeople/>
+      )}
     </SafeAreaView>
   );
 };

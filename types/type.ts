@@ -60,13 +60,22 @@ export interface InputFieldProps extends TextInputProps {
     iconStyle?: StyleProp<ImageStyle>;
     className?: string;
     icon?: any;
-    isSelectDate? : boolean,
-    onChangeDate? : (value : Date) => void,
-    selectedDate? : Date,
-    isDropDown? : boolean,
-    options? : {
-        option : string
+    isSelectDate?: boolean,
+    onChangeDate?: (value: Date) => void,
+    selectedDate?: Date,
+    isDropDown?: boolean,
+    options?: {
+        option: string
     }[],
-    selectedOption? : string,
-    onSelectedOption? : (value: string) => void,
+    selectedOption?: string,
+    onSelectedOption?: (value: string) => void,
+}
+
+export type ProfileFormType = {
+    image: string,
+    dob: Date | undefined,
+    fullname: string,
+    gender: string,
+    about: string,
+    phoneNo: string,
 }

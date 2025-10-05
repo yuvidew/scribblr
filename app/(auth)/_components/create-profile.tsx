@@ -5,6 +5,8 @@ import { icons } from '../../../constants/icons'
 import * as ImagePicker from "expo-image-picker";
 import InputField from '../../../components/InputField'
 import CustomButton from '../../../components/CustomButton'
+import { ProfileFormType } from '../../../types/type';
+import Toast from 'react-native-toast-message';
 
 interface Props {
     onProgressState : () => void
@@ -28,14 +30,7 @@ interface Props {
  */
 
 const CreateProfile = ({onProgressState} : Props) => {
-    const [form, setForm] = useState<{
-        image : string,
-        dob : Date | undefined,
-        fullname : string,
-        gender : string,
-        about : string,
-        phoneNo : string,
-    }>({
+    const [form, setForm] = useState<ProfileFormType>({
         image: "",
         dob : new Date(),
         fullname : "",
@@ -48,7 +43,12 @@ const CreateProfile = ({onProgressState} : Props) => {
 
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== "granted") {
-            alert("Sorry, we need camera roll permissions to make this work!");
+            Toast.show({
+                type : "error",
+                text2 : "Sorry, we need camera roll permissions to make this work!",
+                position: 'top', 
+                visibilityTime: 3000,
+            });
             return;
         }
 
@@ -80,7 +80,7 @@ const CreateProfile = ({onProgressState} : Props) => {
                 {/* end to title or description */}
 
             </View>
-            {/* end to heading or description boc */}
+            {/* end to heading or description box */}
 
             {/* start to upload user image */}
             <View style={styles.upload_image_container}>

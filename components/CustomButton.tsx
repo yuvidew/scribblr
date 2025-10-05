@@ -20,7 +20,7 @@ const getBgVariantStyle = (variant: ButtonProps["bgVariant"]): ViewStyle => {
         case "success":
             return { backgroundColor: color.success[500] };
         case "outline":
-            return { backgroundColor: "transparent" };
+            return { borderWidth : 1.5 , borderColor : color.secondary[200] };
         default:
             return { backgroundColor: color.primary[700] };
     }
