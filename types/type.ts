@@ -76,6 +76,5 @@ export type ProfileFormType = {
     dob: Date | undefined,
     fullname: string,
     gender: string,
-    about: string,
     phoneNo: string,
 }

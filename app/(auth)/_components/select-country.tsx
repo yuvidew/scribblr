@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View, } from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View, } from 'react-native'
 import React, { useMemo, useState } from 'react'
 import SearchBox from '../../../components/search-box'
 import { color } from '../../../constants/colors';
@@ -7,6 +7,8 @@ import { useGetCountries } from '../hook/use-get-counties'
 import Spinner from '../../../components/Spinner'
 import { icons } from '../../../constants/icons';
 import CustomButton from '../../../components/CustomButton';
+import { useStoreCountry } from '../../../zustand/manage_country';
+import Toast from 'react-native-toast-message';
 
 interface Props {
     onProgressState: () => void
@@ -35,15 +37,28 @@ interface Props {
  */
 
 const SelectCountry = ({ onProgressState }: Props) => {
-    // TODO : implement a api hook to submit the selected country
     const { isLoading, isError, data } = useGetCountries();
-
+    const {setCountry , country} = useStoreCountry()
 
     const [searchValue, setSearchValue] = useState("")
 
     const filterCountry = useMemo(() => {
         return (data ?? []).filter(({ name }) => name.toLowerCase().includes(searchValue.toLowerCase()))
-    }, [searchValue, data])
+    }, [searchValue, data]);
+
+
+    const onSubmit = () => {
+        if (!country) {
+            Toast.show({
+                type : "error",
+                text1 : "Select the country"
+            });
+
+            return ;
+        }
+
+        onProgressState()
+    }
 
     return (
         <View style={styles.container}>
@@ -98,20 +113,24 @@ const SelectCountry = ({ onProgressState }: Props) => {
                             </View>
                         </View>
                     ) : filterCountry?.map((item, i) => (
-                        <View key={i} style={styles.country_box}>
+                        <TouchableOpacity 
+                            key={i} 
+                            style={country === item.name ? styles.selected_country_box : styles.country_box}
+                            onPress={() => setCountry(item.name)}
+                        >
                             <Image
                                 source={{ uri: item.flag?.png ?? item.flag?.svg }}
                                 style={{ width: 40, height: 40 }}
                                 resizeMode="contain"
                             />
-                            <Text style={styles.country_sign}>{item.name?.slice(0, 2).toUpperCase()}</Text>
-                            <Text style={styles.country_text}>{item.name.length > 20 ? `${item.name.slice(0, 20)}...` : item.name}</Text>
-                        </View>
+                            <Text style={country === item.name ? styles.selected_country_sign : styles.country_sign}>{item.name?.slice(0, 2).toUpperCase()}</Text>
+                            <Text style={country === item.name ? styles.selected_country_text  :styles.country_text}>{item.name.length > 20 ? `${item.name.slice(0, 20)}...` : item.name}</Text>
+                        </TouchableOpacity>
                     ))
                 }
             </ScrollView>
 
-            <CustomButton title='Continue' onPress={onProgressState} rounded="full" />
+            <CustomButton title='Continue' onPress={onSubmit} rounded="full" />
         </View>
     )
 }
@@ -167,16 +186,43 @@ const styles = StyleSheet.create({
 
     },
 
+    selected_country_box: {
+        borderWidth: 1,
+        borderColor: color.primary[800],
+        height: 70,
+        // width : "100%",
+        backgroundColor : color.primary[300],
+        borderRadius: 8,
+        display: "flex",
+        alignItems: "center",
+        flexDirection: "row",
+        gap: 25,
+        paddingHorizontal: 20,
+
+    },
+
     country_sign: {
         fontFamily: "Jakarta-SemiBold",
         fontSize: 17,
         color: color.secondary[500]
     },
 
+    selected_country_sign: {
+        fontFamily: "Jakarta-SemiBold",
+        fontSize: 17,
+        color: color.primary[800]
+    },
+
     country_text: {
         fontFamily: "Jakarta-Bold",
         fontSize: 20,
         color: color.secondary[800]
+    },
+
+    selected_country_text: {
+        fontFamily: "Jakarta-Bold",
+        fontSize: 20,
+        color: "#fff"
     },
 
     loading_container: {
