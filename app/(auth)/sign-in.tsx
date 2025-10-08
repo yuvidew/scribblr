@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View, Pressable ,  } from 'react-native'
 import React, { useState } from 'react'
-import { Link, Redirect, router } from 'expo-router'
+import { Link, router } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Image } from 'expo-image'
 import { color } from '../../constants/colors'
@@ -111,7 +111,17 @@ const SignInScreen = () => {
                 </View>
                 {/* end to sign in with google */}
 
-                <CustomButton title='Sign in' rounded="full" />
+                <View style = {{ display : "flex" , gap : 15}}>
+                    <CustomButton title='Sign in' rounded="full" />
+
+                    {/* start to redirect link */}
+                    <Text style = {styles.redirect_text}>
+                        Don&apos;t have an account? {" "}
+                        <Link href={"/(auth)/sign-up"} style = {styles.redirect_link}>Sign Up</Link>
+                    </Text>
+                    {/* end to redirect link */}
+                </View>
+
             </View>
 
         </SafeAreaView>
@@ -191,5 +201,16 @@ const styles = StyleSheet.create({
         fontSize : 15,
         fontFamily : "Jakarta",
         textAlign : "center"
+    },
+    redirect_text : {
+        textAlign : "center",
+        fontFamily : "Jakarta",
+        fontSize : 16
+    },
+    redirect_link : {
+        textAlign : "center",
+        fontFamily : "Jakarta-SemiBold",
+        fontSize : 16,
+        color : color.primary[800]
     }
 })

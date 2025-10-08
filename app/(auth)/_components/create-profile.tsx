@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image } from 'expo-image'
 import { icons } from '../../../constants/icons'
 import * as ImagePicker from "expo-image-picker";
@@ -7,9 +7,13 @@ import InputField from '../../../components/InputField'
 import CustomButton from '../../../components/CustomButton'
 import { ProfileFormType } from '../../../types/type';
 import Toast from 'react-native-toast-message';
+import { useCreateProfile } from '../hook/use-create-profile';
+import { useStoreCountry } from '../../../zustand/manage_country';
+import { formatDateToYMD } from '@/lib/util';
+// import { image } from '@/constants/image';
 
 interface Props {
-    onProgressState : () => void
+    onProgressState: () => void
 }
 
 /**
@@ -29,14 +33,16 @@ interface Props {
  * <CreateProfile onProgressState={() => setProgressState("profile")} />
  */
 
-const CreateProfile = ({onProgressState} : Props) => {
+const CreateProfile = ({ onProgressState }: Props) => {
+    const {isPending , mutate , isSuccess} = useCreateProfile();
+    const {country} = useStoreCountry()
+
     const [form, setForm] = useState<ProfileFormType>({
         image: "",
-        dob : new Date(),
-        fullname : "",
-        gender : "",
-        about : "",
-        phoneNo : ""
+        dob: new Date(),
+        fullname: "",
+        gender: "",
+        phoneNo: ""
     });
 
     const onPickImage = async () => {
@@ -44,25 +50,58 @@ const CreateProfile = ({onProgressState} : Props) => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== "granted") {
             Toast.show({
-                type : "error",
-                text2 : "Sorry, we need camera roll permissions to make this work!",
-                position: 'top', 
+                type: "error",
+                text2: "Sorry, we need camera roll permissions to make this work!",
+                position: 'top',
                 visibilityTime: 3000,
             });
             return;
         }
 
         const result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images, 
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
-            aspect: [4, 3], 
+            aspect: [4, 3],
             quality: 1,
         });
 
         if (!result.canceled) {
-            setForm((prev) => ({ ...prev, image: result.assets[0].uri })); 
+            setForm((prev) => ({ ...prev, image: result.assets[0].uri }));
         }
     };
+
+    const onSubmit = () => {
+        if (!form.image || !form.dob || !form.fullname || !form.gender || !form.phoneNo) {
+            Toast.show({
+                type: "error",
+                text1: "Fill all fields"
+            })
+
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", {
+            uri: form.image, 
+            type: "image/jpeg",
+            name: "photo.jpg",
+        } as any);
+
+        formData.append("date_of_birth", formatDateToYMD(form.dob.toISOString()));
+        formData.append("fullname", form.fullname);
+        formData.append("gender", form.gender);
+        formData.append("phone_number", form.phoneNo);
+        formData.append("country", country);
+
+        mutate(formData)
+    }
+
+    // // useEffect(() => {
+    //     if (isSuccess) {
+    //         onProgressState()
+    //     }
+    // } , [isSuccess])
+
     return (
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
             {/* start to heading or description box */}
@@ -87,11 +126,11 @@ const CreateProfile = ({onProgressState} : Props) => {
                 {form.image ? (
 
                     <Image
-                        source={{uri : form.image}}
+                        source={{ uri: form.image }}
                         style={{
                             width: "100%",
                             height: "100%",
-                            borderRadius : 100
+                            borderRadius: 100
                         }}
                         resizeMode="cover"
                     />
@@ -112,14 +151,14 @@ const CreateProfile = ({onProgressState} : Props) => {
                         source={icons.edit}
                         style={styles.edit_icon}
                         resizeMode="contain"
-                    
+
                     />
                 </TouchableOpacity>
             </View>
             {/* end to upload user image */}
 
             {/* start to profile form */}
-            <View style = {styles.profile_form_container}>
+            <View style={styles.profile_form_container}>
 
                 <InputField
                     label={'Full Name'}
@@ -127,7 +166,7 @@ const CreateProfile = ({onProgressState} : Props) => {
                     value={form.fullname}
                     onChangeText={(value) => setForm((prev) => ({
                         ...prev,
-                        fullname : value
+                        fullname: value
                     }))}
                 />
 
@@ -135,10 +174,10 @@ const CreateProfile = ({onProgressState} : Props) => {
                     label={'Phone Number'}
                     placeholder='+1 000 000 000'
                     textContentType="telephoneNumber"
-                    value = {form.phoneNo}
+                    value={form.phoneNo}
                     onChangeText={(value) => setForm((prev) => ({
                         ...prev,
-                        phoneNo : value
+                        phoneNo: value
                     }))}
                 />
 
@@ -148,19 +187,19 @@ const CreateProfile = ({onProgressState} : Props) => {
                     isDropDown
                     options={[
                         {
-                            option : "Male"
+                            option: "Male"
                         },
                         {
-                            option : "Female"
+                            option: "Female"
                         },
                         {
-                            option : "Other"
+                            option: "Other"
                         },
                     ]}
                     selectedOption={form.gender}
                     onSelectedOption={(value) => setForm((prev) => ({
                         ...prev,
-                        gender : value
+                        gender: value
                     }))}
                 />
 
@@ -171,11 +210,11 @@ const CreateProfile = ({onProgressState} : Props) => {
                     selectedDate={form.dob}
                     onChangeDate={(value) => setForm((prev) => ({
                         ...prev,
-                        dob : value
+                        dob: value
                     }))}
                 />
 
-            <CustomButton title='Continue' rounded="full" onPress={onProgressState} />
+                <CustomButton loading = {isPending} title='Continue' rounded="full" onPress={onSubmit} />
             </View>
             {/* end to profile form */}
 
@@ -194,7 +233,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12,
         gap: 35,
 
-        paddingBottom : 85
+        paddingBottom: 85
     },
 
     container_description: {
@@ -217,7 +256,7 @@ const styles = StyleSheet.create({
         height: 150,
         marginHorizontal: "auto",
         position: "relative",
-        marginTop : 30
+        marginTop: 30
     },
     edit_icon: {
         width: 35,
@@ -226,9 +265,9 @@ const styles = StyleSheet.create({
         bottom: 0,
         right: 0
     },
-    profile_form_container : {
-        display : "flex",
-        gap : 35,
-        paddingBottom : 10
+    profile_form_container: {
+        display: "flex",
+        gap: 35,
+        paddingBottom: 10
     }
 })
