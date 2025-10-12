@@ -312,7 +312,6 @@ export const onSignin = async (form : signInFromType) => {
             })
 
             await AsyncStorage.setItem("accessToken", data.token);
-            await AsyncStorage.setItem("userProfile", JSON.stringify(data.user.profile_id));
 
             return true
         }   
