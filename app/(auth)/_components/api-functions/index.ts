@@ -296,3 +296,53 @@ export const followUser = async ( user_id : number) => {
         
     }
 }
+
+type signInFromType = {
+    email: string,
+    password: string
+}
+
+export const onSignin = async (form : signInFromType) => {
+    try {
+        const { data, status } = await api.post(api_end_points.sign_in_api, form);
+        if (status === 200) {
+            Toast.show({
+                type: "success",
+                text1: data.message
+            })
+
+            await AsyncStorage.setItem("accessToken", data.token);
+
+            return true
+        }   
+        return false
+    } catch (error) {
+        if (isAxiosError(error)) {
+            console.log("Error to Sign in", error);
+            if (error.response?.status === 400) {
+                Toast.show({
+                    type: "error",
+                    text1: error.response.data.message
+                })
+            } else if (error.response?.status === 401) {
+                Toast.show({
+                    type: "error",
+                    text1: error.response.data.message
+                })
+            } else if (error.response?.status === 500) {
+                Toast.show({
+                    type: "error",
+                    text1: error.response.data.message
+                })
+            }       
+            else {
+                Toast.show({
+                    type: "error",
+                    text1: error?.response?.data.message
+                })
+            }
+            return false
+        }
+        return false
+    }
+}

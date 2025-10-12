@@ -1,26 +1,52 @@
-import { StyleSheet, Text, TouchableOpacity, View, Pressable ,  } from 'react-native'
-import React, { useState } from 'react'
-import { Link, router } from 'expo-router'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { Image } from 'expo-image'
-import { color } from '../../constants/colors'
-import { icons } from '../../constants/icons'
-import InputField from '../../components/InputField'
-import CustomButton from '../../components/CustomButton'
+import {
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+    Pressable,
+} from "react-native";
+import React, { useState } from "react";
+import { Link, router } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Image } from "expo-image";
+import { color } from "../../constants/colors";
+import { icons } from "../../constants/icons";
+import InputField from "../../components/InputField";
+import CustomButton from "../../components/CustomButton";
+import { useSignIn } from "./hook/use-sign-in";
+import Toast from "react-native-toast-message";
 
 const SignInScreen = () => {
-    // TODO : submit the sign up date to te back throghe the api
+    const { mutate: onSignIn, isPending } = useSignIn();
     const [checked, setChecked] = useState(false);
     const [signinForm, setSigninForm] = useState({
         email: "",
-        password: ""
+        password: "",
     });
 
-    const onChangeFormValue = (key: | "email" | "password", value: string) => {
+    const onChangeFormValue = (key: "email" | "password", value: string) => {
         setSigninForm((prev) => ({
             ...prev,
-            [key]: value
-        }))
+            [key]: value,
+        }));
+    };
+
+    const onSubmit = () => {
+        onSignIn(signinForm, {
+            onSuccess: (data) => {
+                Toast.show({
+                    type: "success",
+                    text1: "Sign in successful",
+                });
+                // TODO: add navigation to the main app
+            },
+            onError: (error) => {
+                Toast.show({
+                    type: "error",
+                    text1: "Sign in failed",
+                });
+            },
+        });
     };
 
     return (
@@ -44,22 +70,24 @@ const SignInScreen = () => {
                 {/* start to sign in heading */}
                 <View style={styles.container_description}>
                     <Text style={styles.title}>Hello there 👋</Text>
-                    <Text style={styles.description}>Please enter your username/email and password to sign in.</Text>
+                    <Text style={styles.description}>
+                        Please enter your username/email and password to sign in.
+                    </Text>
                 </View>
                 {/* end to sign in heading */}
 
                 {/* start to sign in form */}
                 <View style={{ display: "flex", gap: 20 }}>
                     <InputField
-                        label={'Username / Email'}
-                        placeholder='Username / Email'
+                        label={"Email"}
+                        placeholder="Email"
                         value={signinForm.email}
                         onChangeText={(value) => onChangeFormValue("email", value)}
                     />
 
                     <InputField
-                        label={'Password'}
-                        placeholder='Password'
+                        label={"Password"}
+                        placeholder="Password"
                         value={signinForm.password}
                         onChangeText={(value) => onChangeFormValue("password", value)}
                         isPassword
@@ -68,10 +96,7 @@ const SignInScreen = () => {
                     <View style={styles.checkboxContainer}>
                         <Pressable
                             onPress={() => setChecked(!checked)}
-                            style={[
-                                styles.checkbox,
-                                checked && styles.checked,
-                            ]}
+                            style={[styles.checkbox, checked && styles.checked]}
                         >
                             {checked && <Text style={styles.checkmark}>✓</Text>}
                         </Pressable>
@@ -82,53 +107,63 @@ const SignInScreen = () => {
                 {/* end to sign in form */}
 
                 {/* start to forget password */}
-                <Link href={"/(auth)/sign-up"} style = {styles.forget_password_text}>Forget password</Link>
+                <Link href={"/(auth)/sign-up"} style={styles.forget_password_text}>
+                    Forget password
+                </Link>
                 {/* end to forget password */}
 
                 {/* start to sign in with google */}
-                <View style = {{
-                    display : "flex",
-                    gap : 15
-                }} >
-                    <Text style = {styles.continue_with_text}> or continue with</Text>
+                <View
+                    style={{
+                        display: "flex",
+                        gap: 15,
+                    }}
+                >
+                    <Text style={styles.continue_with_text}> or continue with</Text>
 
-                    <CustomButton 
-                    title='Continue with Google' 
-                    rounded='full' 
-                    bgVariant="outline" 
-                    IconLeft={
-                        <Image 
-                            source={icons.google} 
-                            style = {{
-                                width : 23 , 
-                                height : 23,
-                                marginTop : 2
-                            }} 
-                            resizeMode="contain"
-                    />}
-                    textVariant="secondary" 
-                />
+                    <CustomButton
+                        title="Continue with Google"
+                        rounded="full"
+                        bgVariant="outline"
+                        IconLeft={
+                            <Image
+                                source={icons.google}
+                                style={{
+                                    width: 23,
+                                    height: 23,
+                                    marginTop: 2,
+                                }}
+                                resizeMode="contain"
+                            />
+                        }
+                        textVariant="secondary"
+                    />
                 </View>
                 {/* end to sign in with google */}
 
-                <View style = {{ display : "flex" , gap : 15}}>
-                    <CustomButton title='Sign in' rounded="full" />
+                <View style={{ display: "flex", gap: 15 }}>
+                    <CustomButton
+                        title="Sign in"
+                        rounded="full"
+                        loading={isPending}
+                        onPress={onSubmit}
+                    />
 
                     {/* start to redirect link */}
-                    <Text style = {styles.redirect_text}>
-                        Don&apos;t have an account? {" "}
-                        <Link href={"/(auth)/select-country"} style = {styles.redirect_link}>Sign Up</Link>
+                    <Text style={styles.redirect_text}>
+                        Don&apos;t have an account?{" "}
+                        <Link href={"/(auth)/select-country"} style={styles.redirect_link}>
+                            Sign Up
+                        </Link>
                     </Text>
                     {/* end to redirect link */}
                 </View>
-
             </View>
-
         </SafeAreaView>
-    )
-}
+    );
+};
 
-export default SignInScreen
+export default SignInScreen;
 
 const styles = StyleSheet.create({
     container: {
@@ -148,17 +183,17 @@ const styles = StyleSheet.create({
     },
 
     container_description: {
-        display: 'flex',
+        display: "flex",
         gap: 18,
     },
 
     title: {
-        fontFamily: 'Jakarta-Bold',
+        fontFamily: "Jakarta-Bold",
         fontSize: 30,
     },
 
     description: {
-        fontFamily: 'Jakarta',
+        fontFamily: "Jakarta",
         fontSize: 17,
     },
 
@@ -166,7 +201,7 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        gap: 8
+        gap: 8,
     },
 
     checkbox: {
@@ -189,28 +224,28 @@ const styles = StyleSheet.create({
     label: {
         fontSize: 16,
         color: color.secondary[800],
-        fontFamily: "Jakarta-SemiBold"
+        fontFamily: "Jakarta-SemiBold",
     },
-    forget_password_text : {
-        textAlign : "center",
-        color : color.primary[800],
-        fontSize : 16,
-        fontFamily : "Jakarta-Medium"
+    forget_password_text: {
+        textAlign: "center",
+        color: color.primary[800],
+        fontSize: 16,
+        fontFamily: "Jakarta-Medium",
     },
-    continue_with_text : {
-        fontSize : 15,
-        fontFamily : "Jakarta",
-        textAlign : "center"
+    continue_with_text: {
+        fontSize: 15,
+        fontFamily: "Jakarta",
+        textAlign: "center",
     },
-    redirect_text : {
-        textAlign : "center",
-        fontFamily : "Jakarta",
-        fontSize : 16
+    redirect_text: {
+        textAlign: "center",
+        fontFamily: "Jakarta",
+        fontSize: 16,
     },
-    redirect_link : {
-        textAlign : "center",
-        fontFamily : "Jakarta-SemiBold",
-        fontSize : 16,
-        color : color.primary[800]
-    }
-})
+    redirect_link: {
+        textAlign: "center",
+        fontFamily: "Jakarta-SemiBold",
+        fontSize: 16,
+        color: color.primary[800],
+    },
+});
