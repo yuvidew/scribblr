@@ -27,10 +27,31 @@ const FollowPeople = () => {
     const { mutate: onFollowUser } = useFollowUser()
     const [showSuccess, setShowSuccess] = useState(false);
     const [count , setCount] = useState(0);
+    const [followedUsers, setFollowedUsers] = useState<Set<number>>(new Set());
 
     const onRedirectToSignIn = () => {
         setShowSuccess(false);
         router.replace("/(auth)/sign-in")
+    }
+
+    const onSubmit = (profile_id : number) => {
+        onFollowUser(profile_id , {
+            onSuccess: () => {
+                setFollowedUsers(prev => {
+                    const next = new Set(prev);
+                    next.delete(profile_id);
+                    return next;
+                });
+                setCount(prev => prev + 1);
+            },
+            onError: () => {
+                setFollowedUsers(prev => {
+                    const next = new Set(prev);
+                    next.delete(profile_id);
+                    return next;
+                });
+            }
+        })
     }
 
 
@@ -68,10 +89,8 @@ const FollowPeople = () => {
                                 styles.followButton,
                                 item.follow ? styles.followingButton : styles.followButtonActive,
                             ]}
-                            onPress={() => {
-                                onFollowUser(item.profile_id)
-                                setCount(prev => prev + 1)
-                            }}
+                            disabled={followedUsers.has(item.profile_id)}
+                            onPress={() => onSubmit(item.profile_id)}
                         >
                             <Text
                                 style={[

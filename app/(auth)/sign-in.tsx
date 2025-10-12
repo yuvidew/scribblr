@@ -117,7 +117,7 @@ const SignInScreen = () => {
                     {/* start to redirect link */}
                     <Text style = {styles.redirect_text}>
                         Don&apos;t have an account? {" "}
-                        <Link href={"/(auth)/select-country"} style = {styles.redirect_link}>Sign Up</Link>
+                        <Link href={"/(auth)/sign-up"} style = {styles.redirect_link}>Sign Up</Link>
                     </Text>
                     {/* end to redirect link */}
                 </View>

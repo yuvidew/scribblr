@@ -12,6 +12,7 @@ import { useSelectInterestTopics } from "./hook/use-select-interest-topics";
 import BackArrowProgressBar from "./_components/back-arrow-progressbar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
+import Toast from "react-native-toast-message";
 
 const blogTopics = [
     "Personal Development",
@@ -78,6 +79,13 @@ const SelectInterestTopic = () => {
                 if (result) 
                 router.push("/(auth)/follow-people")
             },
+            onError: (error) => {
+                Toast.show({
+                    type: "error",
+                    text1: "Failed to submit topics",
+                    text2: error.message,
+                });
+            }
         });
 
     };
@@ -133,6 +141,7 @@ const SelectInterestTopic = () => {
                     width="half"
                     bgVariant="secondary"
                     textVariant="primary"
+                    onPress={() => router.push("/(auth)/follow-people")} 
                 />
                 <CustomButton
                     disabled={selectTopics.length === 0}
