@@ -1,69 +1,116 @@
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+
 import React, { useState } from "react";
-import { router } from "expo-router";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Image } from "expo-image";
-import { icons } from "../../constants/icons";
 import { color } from "../../constants/colors";
-import SelectCountry from "./_components/select-country";
-import CreateProfile from "./_components/create-profile";
-import CreateAccount from "./_components/create-accout";
-import SelectInterestTopic from "./_components/select-interest-topic";
-import FollowPeople from "./_components/follow-people";
+import Toast from "react-native-toast-message";
+import InputField from "../../components/InputField";
+import CustomButton from "../../components/CustomButton";
+import { useCreateAccount } from "./hook/use-create-account";
+import { SignupFormType } from "../../types/type";
+import BackArrowProgressBar from "./_components/back-arrow-progressbar";
+import { router } from "expo-router";
+
 
 const SignupScreen = () => {
-  const [progressState, setProgressState] = useState<
-    "country" | "profile" | "sign-up" | "interest-topic" | "follow-peoples"
-  >("interest-topic");
+  const { mutate: onCreateAccount } = useCreateAccount()
+  const [signupForm, setSignupForm] = useState<SignupFormType>({
+    username: "",
+    password: "",
+    confirmPassword: "",
+    email: ""
+  });
+
+  const onChangeFormValue = (key: "username" | "email" | "password" | "confirmPassword", value: string) => {
+    setSignupForm((prev) => ({
+      ...prev,
+      [key]: value
+    }))
+  };
+
+
+  const onSubmit = async () => {
+    if (signupForm.password !== signupForm.confirmPassword) {
+      Toast.show({
+        type: 'error',
+        text1: 'Password Mismatch',
+        text2: 'Please make sure both passwords are the same.',
+        position: 'top',
+        visibilityTime: 3000,
+      });
+      return
+    }
+    onCreateAccount(signupForm, {
+      onSuccess: (result) => {
+        // if (result) onProgressState();
+        router.push("/(auth)/select-interest-topic")
+      }
+    })
+
+
+  }
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* start to back arrow and progress bar */}
-      <View style={styles.progress_bar_container}>
-        <TouchableOpacity onPress={() => router.back()}>
-          <Image
-            source={icons.backArrow}
-            style={{
-              width: 25,
-              height: 25,
-            }}
-            tintColor={color.secondary[800]}
-          />
-        </TouchableOpacity>
-        <View style={styles.progress_bar}>
-          {/* start to bar */}
-          <View
-            style={[
-              styles.bar,
-              {
-                width:
-                  progressState === "country"
-                    ? "20%"
-                    : progressState === "profile"
-                      ? "40%"
-                      : progressState === "sign-up"
-                        ? "60%"
-                        : progressState === "interest-topic"
-                          ? "80%"
-                          : "100%",
-              },
-            ]}
-          />
-          {/* end to bar */}
-        </View>
+
+      <View style={{gap : 20 , paddingHorizontal : 12}}>
+        <BackArrowProgressBar/>
+          {/* start to title or description */}
+          <View style={styles.container_description}>
+            <Text style={styles.title}>
+              Create an account 🔐
+            </Text>
+
+            <Text style={styles.description}>
+              Enter your username, email & password if you forget it, then you have to do forget password.
+            </Text>
+          </View>
+          {/* end to title or description */}
       </View>
+
       {/* end to back arrow and progress bar */}
-      {progressState === "country" ? (
-        <SelectCountry onProgressState={() => setProgressState("profile")} />
-      ) : progressState === "profile" ? (
-        <CreateProfile onProgressState={() => setProgressState("sign-up")} />
-      ) : progressState === "sign-up" ? (
-        <CreateAccount onProgressState={() => setProgressState("interest-topic")} />
-      ) : progressState === "interest-topic" ? (
-        <SelectInterestTopic onProgressState={() => setProgressState("follow-peoples")} />
-      ) : progressState === "follow-peoples" &&  (
-        <FollowPeople/>
-      )}
+      <ScrollView style={styles.scroll_container} contentContainerStyle={{paddingBottom : 20}} showsVerticalScrollIndicator={false}>
+        {/* start to heading or description box */}
+        <View style={{ gap: 20 }}>
+
+          <View style={styles.signup_form_container}>
+            <InputField
+              label={'Username'}
+              placeholder='Username'
+              value={signupForm.username}
+              onChangeText={(value) => onChangeFormValue("username", value)}
+            />
+
+            <InputField
+              label={'Email'}
+              placeholder='Email'
+              value={signupForm.email}
+              onChangeText={(value) => onChangeFormValue("email", value)}
+              textContentType='emailAddress'
+            />
+
+            <InputField
+              label={'Password'}
+              placeholder='Password'
+              value={signupForm.password}
+              onChangeText={(value) => onChangeFormValue("password", value)}
+              isPassword
+            />
+
+            <InputField
+              label={'Confirm password'}
+              placeholder='Confirm password'
+              value={signupForm.confirmPassword}
+              onChangeText={(value) => onChangeFormValue("confirmPassword", value)}
+              isPassword
+            />
+
+            <CustomButton title='Continue' onPress={onSubmit} rounded="full" />
+          </View>
+          {/* end to sign up form */}
+        </View>
+        {/* end to heading or description box */}
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -75,7 +122,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     position: "relative",
-    padding: 12,
+    paddingHorizontal: 12,
+    gap: 30,
+  },
+
+  scroll_container : {
+  flex: 1,
+    backgroundColor: "#fff",
+    position: "relative",
+    paddingHorizontal: 12,
     gap: 30,
   },
 
@@ -97,4 +152,25 @@ const styles = StyleSheet.create({
     backgroundColor: color.primary[800],
     height: "100%",
   },
+
+  container_description: {
+    display: "flex",
+    gap: 18
+  },
+
+  title: {
+    fontFamily: "Jakarta-Bold",
+    fontSize: 30
+  },
+
+  description: {
+    fontFamily: "Jakarta",
+    fontSize: 17
+  },
+
+  signup_form_container: {
+    display: "flex",
+    gap: 35,
+    paddingBottom: 10
+  }
 });

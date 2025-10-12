@@ -86,3 +86,17 @@ export type SignupFormType = {
     confirmPassword: string,
     profile_id?: number,
 }
+
+export type UserType = {
+    profile_id: number;
+    fullname: string;
+    phone_number: string;
+    date_of_birth: string; 
+    image_url: string;
+    followers: number;
+    gender: "Male" | "Female" | string;
+    country: string;
+    created_at: string; 
+    updated_at: string; 
+    follow: boolean | number; 
+};
