@@ -10,43 +10,33 @@ import {
     View,
 } from 'react-native';
 import { Image } from 'expo-image';
-import CustomButton from '../../../components/CustomButton';
-import { color } from '../../../constants/colors';
-import { icons } from '../../../constants/icons';
+import CustomButton from '../../components/CustomButton';
+import { color } from '../../constants/colors';
+import { icons } from '../../constants/icons';
+import { useGetAllUsers } from './hook/use-get-all-users';
+import Spinner from '../../components/Spinner';
+import { useFollowUser } from './hook/use-follow-user';
+import { router } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import BackArrowProgressBar from './_components/back-arrow-progressbar';
 
-const users = [
-    { image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', username: 'alex_dev', name: 'Alex Johnson' },
-    { image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', username: 'sarah.designs', name: 'Sarah Parker' },
-    { image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', username: 'mike_codes', name: 'Michael Smith' },
-    { image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', username: 'emma_art', name: 'Emma Williams' },
-    { image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', username: 'john_travel', name: 'John Anderson' },
-    { image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', username: 'lisa_reads', name: 'Lisa Brown' },
-    { image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', username: 'chris_music', name: 'Chris Davis' },
-    { image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', username: 'olivia_fitness', name: 'Olivia Martinez' },
-    { image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', username: 'daniel.tech', name: 'Daniel Taylor' },
-    { image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', username: 'nina_writer', name: 'Nina Wilson' },
-];
 
 
 const FollowPeople = () => {
-    // TODO : fetch the users from the backend
-    const [people, setPeople] = useState(users.map(u => ({ ...u, isFollowing: false })));
+    const { data: users, isLoading } = useGetAllUsers();
+    const { mutate: onFollowUser } = useFollowUser()
     const [showSuccess, setShowSuccess] = useState(false);
+    const [count , setCount] = useState(0);
 
-    const toggleFollow = (index: number) => {
-        const updated = [...people];
-        updated[index].isFollowing = !updated[index].isFollowing;
-        setPeople(updated);
-    };
+    const onRedirectToSignIn = () => {
+        setShowSuccess(false);
+        router.replace("/(auth)/sign-in")
+    }
 
-    const onContinue = () => {
-        setShowSuccess(true);
-        // (optional) auto-close after a moment:
-        // setTimeout(() => setShowSuccess(false), 1800);
-    };
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
+            <BackArrowProgressBar />
             {/* title + description */}
             <View style={styles.container_description}>
                 <Text style={styles.title}>Discover People 🥰</Text>
@@ -59,30 +49,37 @@ const FollowPeople = () => {
                 contentContainerStyle={styles.users_list_content}
                 showsVerticalScrollIndicator={false}
             >
-                {people.map((item, index) => (
+                {isLoading ? (
+                    <View style={styles.loading_state}>
+                        <Spinner loading={true} color="primary" />
+                    </View>
+                ) : users?.map((item, index) => (
                     <View key={index} style={styles.userCard}>
                         <View style={styles.userInfo}>
-                            <Image source={{ uri: item.image }} style={styles.avatar} />
+                            <Image source={{ uri: item.image_url }} style={styles.avatar} />
                             <View>
-                                <Text style={styles.name}>{item.name}</Text>
-                                <Text style={styles.username}>@{item.username}</Text>
+                                <Text style={styles.name}>{item.fullname}</Text>
+                                <Text style={styles.username}>@{item.fullname}</Text>
                             </View>
                         </View>
 
                         <TouchableOpacity
                             style={[
                                 styles.followButton,
-                                item.isFollowing ? styles.followingButton : styles.followButtonActive,
+                                item.follow ? styles.followingButton : styles.followButtonActive,
                             ]}
-                            onPress={() => toggleFollow(index)}
+                            onPress={() => {
+                                onFollowUser(item.profile_id)
+                                setCount(prev => prev + 1)
+                            }}
                         >
                             <Text
                                 style={[
                                     styles.followText,
-                                    item.isFollowing ? styles.followingText : styles.followTextActive,
+                                    item.follow ? styles.followingText : styles.followTextActive,
                                 ]}
                             >
-                                {item.isFollowing ? 'Following' : 'Follow'}
+                                {item.follow ? 'Following' : 'Follow'}
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -90,7 +87,7 @@ const FollowPeople = () => {
             </ScrollView>
 
             {/* continue */}
-            <CustomButton title="Continue" rounded="full" onPress={onContinue} />
+            <CustomButton title="Continue" rounded="full" disabled={count === 0} onPress={() => setShowSuccess(true)} />
 
             {/* success modal */}
             <Modal
@@ -116,13 +113,13 @@ const FollowPeople = () => {
 
                         <ActivityIndicator size="small" style={{ marginTop: 16 }} color={color.primary[800]} />
 
-                        <Pressable style={styles.cardBtn} onPress={() => setShowSuccess(false)}>
+                        <Pressable style={styles.cardBtn} onPress={onRedirectToSignIn}>
                             <Text style={styles.cardBtnText}>Okay</Text>
                         </Pressable>
                     </Pressable>
                 </Pressable>
             </Modal>
-        </View>
+        </SafeAreaView>
     );
 };
 
@@ -133,9 +130,9 @@ const styles = StyleSheet.create({
         flex: 1,
         display: 'flex',
         backgroundColor: '#fff',
-        paddingHorizontal: 12,
+        paddingHorizontal: 24,
         gap: 35,
-        paddingBottom: 85,
+        paddingBottom: 25,
     },
 
     container_description: {
@@ -211,6 +208,13 @@ const styles = StyleSheet.create({
     },
     followingText: {
         color: color.primary[800],
+    },
+
+    loading_state : {
+        flex : 1,
+        justifyContent : "center",
+        alignItems : "center",
+        height : 300
     },
 
     /* Modal styles */

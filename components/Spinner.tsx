@@ -1,10 +1,11 @@
 import {  Animated } from 'react-native'
 import React, { useEffect, useRef } from 'react'
 import { icons } from '../constants/icons';
+import {color} from '../constants/colors'
 
 interface Props { 
     loading: boolean 
-    color? : string,
+    color? : "primary" | "secondary" | "danger" | "success" | "warning" | string,
     size? :  "lg" | "sm" | "md" 
 }
 
@@ -27,6 +28,23 @@ const getSizeStyle = (variant : "lg" | "sm" | "md" ) => {
             return {width : 25 , height : 25 }
         default:
             return {width : 20 , height : 20 };
+    }
+}
+
+const getColorStyle = (colorStyle : string) => {
+    switch (colorStyle) {
+        case "primary":
+            return  color.primary[800]
+        case "secondary":
+            return  color.secondary[800]
+        case "danger":
+            return  color.danger[800]
+        case "success":
+            return  color.success[800]
+        case "warning":
+            return  color.warning[800]
+        default:
+            return  "#fff";
     }
 }
 
@@ -56,7 +74,7 @@ const Spinner = ({ loading , color = "#fff" , size = "md"}: Props) => {
         <Animated.Image
             source={icons.loader}
             style={[{ transform: [{ rotate: rotateInterpolate }] } , getSizeStyle(size)]}
-            tintColor={color}
+            tintColor={getColorStyle(color)}
             
         />
     )

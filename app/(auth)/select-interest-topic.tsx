@@ -6,9 +6,12 @@ import {
     TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
-import { color } from "../../../constants/colors";
-import CustomButton from "../../../components/CustomButton";
-import { useSelectInterestTopics } from "../hook/use-select-interest-topics";
+import { color } from "../../constants/colors"
+import CustomButton from "../../components/CustomButton"
+import { useSelectInterestTopics } from "./hook/use-select-interest-topics";
+import BackArrowProgressBar from "./_components/back-arrow-progressbar";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { router } from "expo-router";
 
 const blogTopics = [
     "Personal Development",
@@ -44,7 +47,7 @@ const blogTopics = [
 ];
 
 interface Props {
-    onProgressState : () => void
+    onProgressState: () => void;
 }
 
 /**
@@ -57,28 +60,31 @@ interface Props {
  * <SelectInterestTopic onProgressState={() => console.log("Next step")} />
  */
 
-const SelectInterestTopic = ({onProgressState} : Props) => {
+const SelectInterestTopic = () => {
     const { mutate } = useSelectInterestTopics();
     const [selectTopics, setSelectTopics] = useState<string[]>([]);
 
     const onSelectTopic = (topic: string) => {
         if (selectTopics.includes(topic)) {
-            setSelectTopics(selectTopics.filter(t => t !== topic))
+            setSelectTopics(selectTopics.filter((t) => t !== topic));
         } else {
-            setSelectTopics([...selectTopics, topic])
+            setSelectTopics([...selectTopics, topic]);
         }
-    }
+    };
 
     const onSubmit = () => {
-        mutate(selectTopics , {
-            onSuccess : (result) => {
-                if(result) onProgressState();
-            }
+        mutate(selectTopics, {
+            onSuccess: (result) => {
+                if (result) 
+                router.push("/(auth)/follow-people")
+            },
         });
-    }
+
+    };
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
+            <BackArrowProgressBar />
             {/* start to title or description */}
             <View style={styles.container_description}>
                 <Text style={styles.title}>Select your topic of interest 📑</Text>
@@ -101,7 +107,6 @@ const SelectInterestTopic = ({onProgressState} : Props) => {
                                     ? styles.selectedBadgeBG
                                     : styles.badgeBG,
                             ]}
-
                             onPress={() => onSelectTopic(category)}
                         >
                             <Text
@@ -122,12 +127,23 @@ const SelectInterestTopic = ({onProgressState} : Props) => {
 
             {/* start to skip button and continue button */}
             <View style={styles.button_container}>
-                <CustomButton title="Skip" rounded="full" width="half" bgVariant="secondary" textVariant="primary" />
-                <CustomButton disabled={selectTopics.length === 0} title="Continue" rounded="full" width="half" onPress={onSubmit}
-                 />
+                <CustomButton
+                    title="Skip"
+                    rounded="full"
+                    width="half"
+                    bgVariant="secondary"
+                    textVariant="primary"
+                />
+                <CustomButton
+                    disabled={selectTopics.length === 0}
+                    title="Continue"
+                    rounded="full"
+                    width="half"
+                    onPress={onSubmit}
+                />
             </View>
             {/* end to skip button and continue button */}
-        </View>
+        </SafeAreaView>
     );
 };
 
@@ -139,7 +155,7 @@ const styles = StyleSheet.create({
         display: "flex",
         backgroundColor: "#fff",
         // position: "relative",
-        paddingHorizontal: 12,
+        paddingHorizontal: 24,
         gap: 35,
 
         paddingBottom: 85,
@@ -207,6 +223,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         gap: 5,
         alignItems: "center",
-        justifyContent: "space-between"
-    }
+        justifyContent: "space-between",
+    },
 });

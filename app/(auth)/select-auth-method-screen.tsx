@@ -1,13 +1,26 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Image } from 'expo-image'
 import { icons } from '../../constants/icons'
 import { color } from '../../constants/colors'
 import CustomButton from '../../components/CustomButton'
 import { Link, router } from 'expo-router'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const SelectAuthMathScreen = () => {
+    const [isUserHaveProfile, setIsUserHaveProfile] = React.useState(false);
+
+    useEffect(() => {
+        const checkUserProfile = async () => {
+            const userProfile = await AsyncStorage.getItem("userProfile");  
+            if (userProfile) {
+                setIsUserHaveProfile(true);
+            }
+        }
+        checkUserProfile();
+    }, [])
+
     // TODO: implement a sign in with google 
     return (
         <SafeAreaView style={styles.container}>
@@ -74,7 +87,7 @@ const SelectAuthMathScreen = () => {
                     </Text>
                     {/* TODO: first check the user profile is not completed then redirect to create profile screen if not redirect to sign up*/}
                     <Link 
-                        href={"/(auth)/sign-up"}
+                        href={isUserHaveProfile ? "/(auth)/sign-up" : "/(auth)/select-country"}
                         style = {{
                             fontFamily : "Jakarta-SemiBold",
                             color : color.primary[800]

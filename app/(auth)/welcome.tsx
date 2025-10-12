@@ -73,7 +73,7 @@ const WelcomeScreen = () => {
                     bgVariant="secondary"
                     textVariant="primary"
                     width="half"
-                    onPress={() => router.replace("/(auth)/sign-up")}
+                    onPress={() => router.replace("/(auth)/select-auth-method-screen")}
                 />
 
                 <CustomButton

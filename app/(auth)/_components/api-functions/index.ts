@@ -1,6 +1,6 @@
 import axios, { isAxiosError } from "axios";
 // import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Country, CountryListType, SignupFormType } from "../../../../types/type";
+import { Country, CountryListType, SignupFormType, UserType } from "../../../../types/type";
 import Toast from "react-native-toast-message";
 import { api_end_points } from "../../../../lib/api_end_point";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -217,5 +217,82 @@ export const onSelectInterestTopic = async ( topics: string[]) => {
             }
         }
         return false
+    }
+}
+
+export type GetAllUsersResponse = {
+    code : number,
+    users : UserType[]
+}
+
+export const getAllUsers = async (): Promise<UserType[]> => {
+    try {
+        const profile_id = await AsyncStorage.getItem("userProfile");
+        const { data, status } = await api.get<GetAllUsersResponse>(`${api_end_points.get_all_user_api}/${profile_id}`);
+
+
+        if (status === 200) {
+            return data.users ?? [];
+        }
+        return [];
+    } catch (error) {
+        if (isAxiosError(error)) {
+            console.log("Error to Get all users", error);
+            if (error.response?.status === 400) {
+                Toast.show({
+                    type: "error",
+                    text1: error.response.data.message
+                })
+                return [];
+            } else if (error.response?.status === 500) {
+                Toast.show({
+                    type: "error",
+                    text1: error.response.data.message
+                })
+                return [];
+            } else {
+                Toast.show({
+                    type: "error",
+                    text1: error?.response?.data.message
+                })
+                return [];
+            }
+        }
+        return [];
+    }
+}
+
+
+export const followUser = async ( user_id : number) => {
+    try {
+        const profile_id = await AsyncStorage.getItem("userProfile");
+        const { data, status } = await api.post(api_end_points.follow_user_api, { user_profile_id: profile_id, following_profile_id : Number(user_id) });
+        if (status === 200) {
+            Toast.show({
+                type: "success",
+                text1: data.message
+            })
+            
+        }   
+        
+    } catch (error) {
+
+        if (isAxiosError(error)) {
+            console.log("Error to Follow user", error);
+            if (error.response?.status === 400) {
+                Toast.show({
+                    type: "error",
+                    text1: error.response.data.message
+                })
+                
+            } else if (error.response?.status === 500) {
+                Toast.show({
+                    type: "error",
+                    text1: error.response.data.message
+                })
+                
+            }
+        }
+        
     }
 }
