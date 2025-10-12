@@ -8,6 +8,7 @@ import {
 import React, { useState } from "react";
 import { color } from "../../../constants/colors";
 import CustomButton from "../../../components/CustomButton";
+import { useSelectInterestTopics } from "../hook/use-select-interest-topics";
 
 const blogTopics = [
     "Personal Development",
@@ -57,6 +58,7 @@ interface Props {
  */
 
 const SelectInterestTopic = ({onProgressState} : Props) => {
+    const { mutate } = useSelectInterestTopics();
     const [selectTopics, setSelectTopics] = useState<string[]>([]);
 
     const onSelectTopic = (topic: string) => {
@@ -66,6 +68,15 @@ const SelectInterestTopic = ({onProgressState} : Props) => {
             setSelectTopics([...selectTopics, topic])
         }
     }
+
+    const onSubmit = () => {
+        mutate(selectTopics , {
+            onSuccess : (result) => {
+                if(result) onProgressState();
+            }
+        });
+    }
+
     return (
         <View style={styles.container}>
             {/* start to title or description */}
@@ -112,7 +123,8 @@ const SelectInterestTopic = ({onProgressState} : Props) => {
             {/* start to skip button and continue button */}
             <View style={styles.button_container}>
                 <CustomButton title="Skip" rounded="full" width="half" bgVariant="secondary" textVariant="primary" />
-                <CustomButton title="Continue" rounded="full" width="half" />
+                <CustomButton disabled={selectTopics.length === 0} title="Continue" rounded="full" width="half" onPress={onSubmit}
+                 />
             </View>
             {/* end to skip button and continue button */}
         </View>

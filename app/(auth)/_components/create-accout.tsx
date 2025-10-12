@@ -1,11 +1,13 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
-import React, { useState } from 'react'
+import React, {useState } from 'react'
 import InputField from '../../../components/InputField'
 import Toast from 'react-native-toast-message';
 import CustomButton from '../../../components/CustomButton';
+import { SignupFormType } from '../../../types/type';
+import { useCreateAccount } from '../hook/use-create-account';
 
 interface Props {
-    onProgressState : () => void
+    onProgressState: () => void
 }
 
 /**
@@ -18,8 +20,9 @@ interface Props {
  * <CreateAccount onProgressState={() => console.log("Next step")} />
  */
 
-const CreateAccount = ({onProgressState} : Props) => {
-    const [signupForm, setSignupForm] = useState({
+const CreateAccount = ({ onProgressState }: Props) => {
+    const { mutate: onCreateAccount } = useCreateAccount()
+    const [signupForm, setSignupForm] = useState<SignupFormType>({
         username: "",
         password: "",
         confirmPassword: "",
@@ -34,20 +37,26 @@ const CreateAccount = ({onProgressState} : Props) => {
     };
 
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
         if (signupForm.password !== signupForm.confirmPassword) {
             Toast.show({
-                type: 'error', 
+                type: 'error',
                 text1: 'Password Mismatch',
                 text2: 'Please make sure both passwords are the same.',
-                position: 'top', 
-                visibilityTime: 3000, 
+                position: 'top',
+                visibilityTime: 3000,
             });
             return
         }
+        onCreateAccount(signupForm, {
+            onSuccess: (result) => {
+                if (result) onProgressState();
+            }
+        })
 
-        onProgressState()
     }
+
+
     return (
         <ScrollView style={styles.container}>
             {/* start to heading or description box */}

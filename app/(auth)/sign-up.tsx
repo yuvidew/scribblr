@@ -14,7 +14,7 @@ import FollowPeople from "./_components/follow-people";
 const SignupScreen = () => {
   const [progressState, setProgressState] = useState<
     "country" | "profile" | "sign-up" | "interest-topic" | "follow-peoples"
-  >("profile");
+  >("interest-topic");
 
   return (
     <SafeAreaView style={styles.container}>
