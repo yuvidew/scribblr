@@ -42,7 +42,7 @@ const SignupScreen = () => {
     }
     onCreateAccount(signupForm, {
       onSuccess: (result) => {
-        // if (result) onProgressState();
+        if (result) 
         router.push("/(auth)/select-interest-topic")
       }
     })

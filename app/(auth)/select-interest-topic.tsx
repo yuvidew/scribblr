@@ -75,7 +75,7 @@ const SelectInterestTopic = () => {
     const onSubmit = () => {
         mutate(selectTopics, {
             onSuccess: (result) => {
-                // if (result) onProgressState();
+                if (result) 
                 router.push("/(auth)/follow-people")
             },
         });
