@@ -78,3 +78,11 @@ export type ProfileFormType = {
     gender: string,
     phoneNo: string,
 }
+
+export type SignupFormType = {
+    username: string,
+    email: string,
+    password: string,
+    confirmPassword: string,
+    profile_id?: number,
+}

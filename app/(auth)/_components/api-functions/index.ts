@@ -1,8 +1,9 @@
 import axios, { isAxiosError } from "axios";
 // import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Country, CountryListType } from "../../../../types/type";
+import { Country, CountryListType, SignupFormType } from "../../../../types/type";
 import Toast from "react-native-toast-message";
 import { api_end_points } from "../../../../lib/api_end_point";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const api = axios.create();
 
@@ -12,7 +13,12 @@ api.interceptors.request.use(async (config) => {
     // if (token) {
     //     config.headers.Authorization = `Bearer ${token}`;
     // }
-    config.headers["Content-Type"] = "application/json";
+    config.headers = config.headers ?? {};
+    if (config.data instanceof FormData) {
+        config.headers["Content-Type"] = "multipart/form-data";
+    } else {
+        config.headers["Content-Type"] = "application/json";
+    }
     return config;
 });
 
@@ -69,19 +75,23 @@ export const getCountriesList = async () => {
     }
 }
 
+/**
+ * Handles creating the user profile via the API.
+ * @param formdata multipart payload containing profile details.
+ */
 export const onCreateProfile = async (formdata: FormData) => {
-    console.log(
-        "the from data",
-        formdata
-    );
     try {
-        const {data , status} = await api.post("http://192.168.1.4:2000/v1/profile/create-profile" , formdata);
+        const { data, status } = await api.post(api_end_points.create_profile_api, formdata, {
+            headers: { "Content-Type": "multipart/form-data" },
+        });
 
         if (status === 201) {
             Toast.show({
-                type : "success",
-                text1 : data.message
+                type: "success",
+                text1: data.message
             })
+
+            await AsyncStorage.setItem("userProfile", JSON.stringify(data.profile_id));
 
             return true
         }
@@ -119,6 +129,93 @@ export const onCreateProfile = async (formdata: FormData) => {
             }
         }
 
+        return false
+    }
+}
+
+
+
+/**
+ * Attempts to register a new user account.
+ * @param form submitted signup payload.
+ */
+export const onCreateAccount = async (form : SignupFormType) => {
+    try {
+        const profile_id = await AsyncStorage.getItem("userProfile");
+        const { data, status } = await api.post(api_end_points.signup_api, {...form, profile_id : Number(profile_id)});   
+        if (status === 201) {
+            Toast.show({
+                type: "success",
+                text1: data.message
+            })
+            return true
+        }
+        return false
+    }   catch (error) {
+        if (isAxiosError(error)) {
+            console.log("Error to Create account", error);
+            if (error.response?.status === 400) {
+                Toast.show({
+                    type: "error",
+                    text1: error.response.data.message
+                })  
+                return false
+            } else if (error.response?.status === 500) {
+                Toast.show({
+                    type: "error",
+                    text1: error.response.data.message
+                })  
+                return false
+            }
+            else {
+                Toast.show({
+                    type: "error",
+                    text1: error?.response?.data.message
+                })
+                return false
+            }
+        }
+        return false
+    }
+}
+
+export const onSelectInterestTopic = async ( topics: string[]) => {
+    try {
+        const profile_id = await AsyncStorage.getItem("userProfile");
+        const { data, status } = await api.post(api_end_points.select_interest_topic_api, { user_id : Number(profile_id),  topics });
+
+        if (status === 201) {
+            Toast.show({
+                type: "success",
+                text1: data.message
+            })
+            return true
+        }
+        return false
+    } catch (error) {
+        if (isAxiosError(error)) {
+            console.log("Error to Select interest topic", error);
+            if (error.response?.status === 400) {
+                Toast.show({
+                    type: "error",
+                    text1: error.response.data.message
+                })
+                return false
+            } else if (error.response?.status === 500) {
+                Toast.show({
+                    type: "error",
+                    text1: error.response.data.message
+                })
+                return false
+            }
+            else {
+                Toast.show({
+                    type: "error",
+                    text1: error?.response?.data.message
+                })
+                return false
+            }
+        }
         return false
     }
 }

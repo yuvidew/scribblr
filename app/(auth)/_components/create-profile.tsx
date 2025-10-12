@@ -9,7 +9,7 @@ import { ProfileFormType } from '../../../types/type';
 import Toast from 'react-native-toast-message';
 import { useCreateProfile } from '../hook/use-create-profile';
 import { useStoreCountry } from '../../../zustand/manage_country';
-import { formatDateToYMD } from '@/lib/util';
+import { formatDateToYMD } from '../../../lib/util';
 // import { image } from '@/constants/image';
 
 interface Props {
@@ -96,11 +96,11 @@ const CreateProfile = ({ onProgressState }: Props) => {
         mutate(formData)
     }
 
-    // // useEffect(() => {
-    //     if (isSuccess) {
-    //         onProgressState()
-    //     }
-    // } , [isSuccess])
+    useEffect(() => {
+        if (isSuccess) {
+            onProgressState()
+        }
+    } , [isSuccess])
 
     return (
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
