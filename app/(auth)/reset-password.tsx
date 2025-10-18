@@ -70,8 +70,8 @@ const ResetPassword = () => {
                         <InputField
                             label={"Confirm Password"}
                             placeholder="********"
-                            value={form.new_password}
-                            onChangeText={(value) => onChangeFormValue("new_password", value)}
+                            value={form.confirm_password}
+                            onChangeText={(value) => onChangeFormValue("confirm_password", value)}
                             isPassword
                         />
 
