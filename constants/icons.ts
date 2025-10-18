@@ -13,6 +13,17 @@ const emptyCountry = require("@/assets/icons/global-search.png");
 const openEye = require("@/assets/icons/open-eye.png");
 const closeEye = require("@/assets/icons/close-eye.png");
 
+// tab navigate
+const home = require("@/assets/icons/home.png");
+const home_select = require("@/assets/icons/home-selected.png");
+const explore = require("@/assets/icons/explore.png");
+const explore_select = require("@/assets/icons/explore-selected.png");
+const profile = require("@/assets/icons/profile.png");
+const profile_select = require("@/assets/icons/profile-selected.png");
+const document = require("@/assets/icons/document.png");
+const document_select = require("@/assets/icons/document-selected.png");
+const createIcon = require("@/assets/icons/plus.png");
+
 export const icons = {
     loader,
     womanClaud,
@@ -26,6 +37,15 @@ export const icons = {
     closeEye,
     calender,
     downArrow,
-    SignUpUser
+    SignUpUser,
+    home,
+    home_select,
+    explore,
+    explore_select,
+    profile,
+    profile_select,
+    document,
+    document_select,
+    createIcon
 
 }

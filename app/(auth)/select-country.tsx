@@ -14,9 +14,6 @@ import BackArrowProgressBar from './_components/back-arrow-progressbar';
 import { router } from 'expo-router';
 
 const SelectCountry = () => {
-//      const route = useRoute();
-
-//   console.log('Current route name:', route.name);
     const { isLoading, isError, data } = useGetCountries();
     const {setCountry , country} = useStoreCountry()
 

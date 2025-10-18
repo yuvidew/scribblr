@@ -97,7 +97,7 @@ export const onCreateProfile = async (formdata: FormData) => {
         }
     } catch (error) {
         if (isAxiosError(error)) {
-            console.log("Error to Create profile", error);
+            console.log("Error to Create profile", JSON.stringify(error));
             if (error.response?.status === 401) {
                 Toast.show({
                     type: "error",
@@ -144,6 +144,7 @@ export const onCreateAccount = async (form : SignupFormType) => {
         const profile_id = await AsyncStorage.getItem("userProfile");
         const { data, status } = await api.post(api_end_points.signup_api, {...form, profile_id : Number(profile_id)});   
         if (status === 201) {
+            await AsyncStorage.removeItem("userProfile");
             Toast.show({
                 type: "success",
                 text1: data.message
@@ -312,6 +313,7 @@ export const onSignin = async (form : signInFromType) => {
             })
 
             await AsyncStorage.setItem("accessToken", data.token);
+            await AsyncStorage.setItem("user_profile_id", String(data.user.profile_id));
 
             return true
         }   
