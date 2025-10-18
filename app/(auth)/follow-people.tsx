@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-    ActivityIndicator,
     Modal,
     Pressable,
     ScrollView,
@@ -111,7 +110,6 @@ const FollowPeople = () => {
                             Your account has been created.{'\n'}Please wait a moment, we are preparing for you...
                         </Text>
 
-                        <ActivityIndicator size="small" style={{ marginTop: 16 }} color={color.primary[800]} />
 
                         <Pressable style={styles.cardBtn} onPress={onRedirectToSignIn}>
                             <Text style={styles.cardBtnText}>Okay</Text>
