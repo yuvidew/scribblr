@@ -37,7 +37,6 @@ const SignInScreen = () => {
                 if (result) {
                     router.replace("/(root)/(tabs)")
                 }
-                // TODO: add navigation to the main app
             },
             onError: (error) => {
                 Toast.show({
@@ -106,7 +105,7 @@ const SignInScreen = () => {
                 {/* end to sign in form */}
 
                 {/* start to forget password */}
-                <Link href={"/(auth)/sign-up"} style={styles.forget_password_text}>
+                <Link href={"/(auth)/verify-email"} style={styles.forget_password_text}>
                     Forget password
                 </Link>
                 {/* end to forget password */}

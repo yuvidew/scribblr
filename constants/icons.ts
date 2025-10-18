@@ -24,6 +24,8 @@ const document = require("@/assets/icons/document.png");
 const document_select = require("@/assets/icons/document-selected.png");
 const createIcon = require("@/assets/icons/plus.png");
 
+const success_check = require("@/assets/icons/success-check.png")
+
 export const icons = {
     loader,
     womanClaud,
@@ -46,6 +48,6 @@ export const icons = {
     profile_select,
     document,
     document_select,
-    createIcon
-
+    createIcon,
+    success_check
 }
