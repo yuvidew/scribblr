@@ -33,11 +33,10 @@ const SignInScreen = () => {
 
     const onSubmit = () => {
         onSignIn(signinForm, {
-            onSuccess: (data) => {
-                Toast.show({
-                    type: "success",
-                    text1: "Sign in successful",
-                });
+            onSuccess: (result) => {
+                if (result) {
+                    router.replace("/(root)/(tabs)")
+                }
                 // TODO: add navigation to the main app
             },
             onError: (error) => {

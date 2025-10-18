@@ -98,7 +98,11 @@ const CreateProfile = () => {
 
         mutate(formData , {
             onSuccess: (result) => {
-                router.push("/(auth)/sign-up")
+                console.log("the result", result);
+                if (result) {
+                    
+                    router.push("/(auth)/sign-up")
+                }
             }   
         })
     }
