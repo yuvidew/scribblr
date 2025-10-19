@@ -7,9 +7,13 @@ import { Image } from 'expo-image'
 import { icons } from '../../constants/icons'
 import CustomButton from '../../components/CustomButton'
 import InputField from '../../components/InputField'
+import { useStoreEmail } from '../../zustand/manage_email'
+import Toast from 'react-native-toast-message'
+import { useResetPassword } from './hook/use-reset-password'
 
 const ResetPassword = () => {
-    // TODO : integrate post api
+    const { email, setEmail} = useStoreEmail();
+    const { isPending, mutate } = useResetPassword()
     const [form, setForm] = useState({
         new_password: "",
         confirm_password: ""
@@ -26,6 +30,36 @@ const ResetPassword = () => {
     const onRedirectToSignIn = () => {
         setShowSuccess(false);
         router.replace("/(auth)/sign-in")
+    }
+
+    const onSubmit = () => {
+        if (form.confirm_password !== form.new_password) {
+            Toast.show({
+                type: "error",
+                text1: "Password is does not match"
+            })
+        }
+
+        if (!email) {
+            Toast.show({
+                type: "error",
+                text1: "Email is not verified pls verify email"
+            })
+
+            router.push("/(auth)/verify-email")
+        }
+
+        mutate({
+            email,
+            new_password : form.new_password,
+        }, {
+            onSuccess : (result) => {
+                if (result) {
+                    setShowSuccess(true);
+                    setEmail("")
+                }
+            }
+        })
     }
 
     return (
@@ -85,8 +119,8 @@ const ResetPassword = () => {
                     <CustomButton
                         title="Continue"
                         rounded="full"
-                    // loading={isPending}
-                    onPress={() => setShowSuccess(true)}
+                        loading={isPending}
+                        onPress={onSubmit}
                     />
 
                 </View>
@@ -235,8 +269,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.15,
         shadowRadius: 16,
         shadowOffset: { width: 0, height: 8 },
-        display : "flex",
-        gap : 15
+        display: "flex",
+        gap: 15
     },
     iconCircle: {
         width: 84,
@@ -257,7 +291,7 @@ const styles = StyleSheet.create({
         color: '#6a4a3d',
         marginTop: 2,
         marginBottom: 6,
-        textAlign : "center"
+        textAlign: "center"
     },
     cardSubtitle: {
         fontFamily: 'Jakarta',

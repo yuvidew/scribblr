@@ -7,10 +7,37 @@ import { Image } from 'expo-image'
 import { icons } from '../../constants/icons'
 import CustomButton from '../../components/CustomButton'
 import InputField from '../../components/InputField'
+import { useStoreEmail } from '../../zustand/manage_email'
+import { useVerifyOTP } from './hook/use-verify-otp'
+import Toast from 'react-native-toast-message'
 
 const VerifyOtp = () => {
+    const {email} = useStoreEmail();
+    const {isPending , mutate} = useVerifyOTP()
     const [otp, setOtp] = useState("")
-    // TODO : integrate post api
+    
+    const onSubmit = () => {
+        if (!email) {
+            Toast.show({
+                type : "error",
+                text1 : "Email is not verified pls verify email"
+            })
+
+            router.push("/(auth)/verify-email")
+        }
+
+        mutate({
+            email,
+            code : Number(otp) 
+        } , {
+            onSuccess : (result) => {
+                if (result) {
+                    router.push("/(auth)/reset-password")
+                }
+            }
+        })
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             {/* start to back arrow and progress bar */}
@@ -64,8 +91,8 @@ const VerifyOtp = () => {
                     <CustomButton
                         title="Continue"
                         rounded="full"
-                    // loading={isPending}
-                    // onPress={onSubmit}
+                        loading={isPending}
+                        onPress={onSubmit}
                     />
 
                 </View>

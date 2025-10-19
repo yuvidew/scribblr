@@ -1,5 +1,5 @@
-import {useMutation } from "@tanstack/react-query"
-import { onCreateProfile } from "../_components/api-functions"
+import { useMutation } from "@tanstack/react-query"
+import { onCreateProfile } from "../api-functions"
 
 export const  useCreateProfile = () => {
     return useMutation({

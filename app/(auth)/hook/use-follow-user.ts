@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { followUser } from "../_components/api-functions";
+import { followUser } from "../api-functions";
 
 export const useFollowUser = () => {
     const queryClient = useQueryClient();

@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { color } from '../../constants/colors'
 import { router } from 'expo-router'
@@ -7,10 +7,25 @@ import { Image } from 'expo-image'
 import { icons } from '../../constants/icons'
 import CustomButton from '../../components/CustomButton'
 import InputField from '../../components/InputField'
+import { useStoreEmail } from '../../zustand/manage_email'
+import { useVerifyEmail } from './hook/use-verify-email'
 
 const VerifyEmail = () => {
-    const [email , setEmail] = useState("");
-    // TODO : integrate post api
+    const {email, setEmail} = useStoreEmail();
+    const {isPending , mutate} = useVerifyEmail();
+    
+    const onSubmit = () => {
+        mutate({
+            email
+        } , {
+            onSuccess : (result) => {
+                if (result) {
+                    router.push("/(auth)/verify-otp")
+                }
+            }
+        })
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             {/* start to back arrow and progress bar */}
@@ -59,8 +74,8 @@ const VerifyEmail = () => {
                     <CustomButton
                         title="Continue"
                         rounded="full"
-                        // loading={isPending}
-                        // onPress={onSubmit}
+                        loading={isPending}
+                        onPress={onSubmit}
                     />
 
                 </View>
