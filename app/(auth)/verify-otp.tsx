@@ -20,10 +20,11 @@ const VerifyOtp = () => {
         if (!email) {
             Toast.show({
                 type : "error",
-                text1 : "Email is not verified pls verify email"
+                text1 : "Email is not verified. Please verify your email"
             })
 
             router.push("/(auth)/verify-email")
+            return
         }
 
         mutate({

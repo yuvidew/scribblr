@@ -36,17 +36,21 @@ const ResetPassword = () => {
         if (form.confirm_password !== form.new_password) {
             Toast.show({
                 type: "error",
-                text1: "Password is does not match"
+                text1: "Passwords do not match"
             })
+
+            return;
         }
 
         if (!email) {
             Toast.show({
                 type: "error",
-                text1: "Email is not verified pls verify email"
+                text1: "Email is not verified. Please verify your email"
             })
 
-            router.push("/(auth)/verify-email")
+            router.push("/(auth)/verify-email");
+
+            return;
         }
 
         mutate({
