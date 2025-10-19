@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query"
-import { onSelectInterestTopic } from "../_components/api-functions"
+import { onSelectInterestTopic } from "../api-functions"
 
 export const useSelectInterestTopics = () => {
     return useMutation({

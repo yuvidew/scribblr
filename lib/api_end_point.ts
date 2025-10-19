@@ -13,4 +13,7 @@ export const api_end_points = {
     select_interest_topic_api : `${base_url}/${api_version}/user/add-interested-topics`,
     get_all_user_api : `${base_url}/${api_version}/user/get-all-users`,
     follow_user_api : `${base_url}/${api_version}/user/follow-unfollow`,
+    verify_email : `${base_url}/${api_version}/auth/verify-email`,
+    verify_otp : `${base_url}/${api_version}/auth/verify-code`,
+    reset_password : `${base_url}/${api_version}/auth/reset-password`
 }

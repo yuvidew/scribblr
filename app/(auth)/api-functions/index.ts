@@ -1,9 +1,9 @@
 import axios, { isAxiosError } from "axios";
 // import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Country, CountryListType, SignupFormType, UserType } from "../../../../types/type";
-import Toast from "react-native-toast-message";
-import { api_end_points } from "../../../../lib/api_end_point";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from "react-native-toast-message";
+import { api_end_points } from "../../../lib/api_end_point";
+import { Country, CountryListType, SignupFormType, UserType } from "../../../types/type";
 
 const api = axios.create();
 
@@ -321,6 +321,152 @@ export const onSignin = async (form : signInFromType) => {
     } catch (error) {
         if (isAxiosError(error)) {
             console.log("Error to Sign in", error);
+            if (error.response?.status === 400) {
+                Toast.show({
+                    type: "error",
+                    text1: error.response.data.message
+                })
+            } else if (error.response?.status === 401) {
+                Toast.show({
+                    type: "error",
+                    text1: error.response.data.message
+                })
+            } else if (error.response?.status === 500) {
+                Toast.show({
+                    type: "error",
+                    text1: error.response.data.message
+                })
+            }       
+            else {
+                Toast.show({
+                    type: "error",
+                    text1: error?.response?.data.message
+                })
+            }
+            return false
+        }
+        return false
+    }
+}
+
+type verifyEmailType = {
+    email : string
+}
+
+export const onVerifyEmail = async (form : verifyEmailType) => {
+    try {
+        const {data , status} = await api.post(api_end_points.verify_email, form);
+
+        if (status === 200) {
+            Toast.show({
+                type: "success",
+                text1 : data.message
+            })
+
+            return true
+        }   
+        return false
+    } catch (error) {
+        if (isAxiosError(error)) {
+            console.log("Error to Verify email", error);
+            if (error.response?.status === 400) {
+                Toast.show({
+                    type: "error",
+                    text1: error.response.data.message
+                })
+            } else if (error.response?.status === 401) {
+                Toast.show({
+                    type: "error",
+                    text1: error.response.data.message
+                })
+            } else if (error.response?.status === 500) {
+                Toast.show({
+                    type: "error",
+                    text1: error.response.data.message
+                })
+            }       
+            else {
+                Toast.show({
+                    type: "error",
+                    text1: error?.response?.data.message
+                })
+            }
+            return false
+        }
+        return false
+    }
+}
+
+
+type verifyOTPType = {
+    code : number,
+    email : string
+}
+
+export const onVerifyOTP = async (form : verifyOTPType) => {
+    try {
+        const {status , data} = await api.post(api_end_points.verify_otp , form);
+
+        if (status === 200) {
+            Toast.show({
+                type: "success",
+                text1 : data.message
+            })
+
+            return true
+        }   
+        return false
+    } catch (error) {
+        if (isAxiosError(error)) {
+            console.log("Error to verify otp", error);
+            if (error.response?.status === 400) {
+                Toast.show({
+                    type: "error",
+                    text1: error.response.data.message
+                })
+            } else if (error.response?.status === 401) {
+                Toast.show({
+                    type: "error",
+                    text1: error.response.data.message
+                })
+            } else if (error.response?.status === 500) {
+                Toast.show({
+                    type: "error",
+                    text1: error.response.data.message
+                })
+            }       
+            else {
+                Toast.show({
+                    type: "error",
+                    text1: error?.response?.data.message
+                })
+            }
+            return false
+        }
+        return false
+    }
+}
+
+type resetPasswordType = {
+    email : string,
+    new_password : string
+}
+
+export const onResetPassword = async (form : resetPasswordType) => {
+    try {
+        const { data, status } = await api.post(api_end_points.reset_password, form);
+        if (status === 200) {
+            Toast.show({
+                type: "success",
+                text1: data.message
+            })
+
+            return true
+        }   
+        return false
+    } catch (error) {
+        if (isAxiosError(error)) {
+            console.log("Error to Reset password", error);
             if (error.response?.status === 400) {
                 Toast.show({
                     type: "error",

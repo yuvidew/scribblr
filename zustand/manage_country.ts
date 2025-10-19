@@ -7,5 +7,8 @@ type StoreType = {
 
 export const useStoreCountry = create<StoreType>()((set) => ({
     country : "",
+    /**
+     * @param value - New country value to persist in the store.
+     */
     setCountry : (value) => set({ country : value })
 }))

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { getCountriesList } from "../_components/api-functions"
+import { getCountriesList } from "../api-functions"
 
 export const useGetCountries = () => {
     return useQuery({
