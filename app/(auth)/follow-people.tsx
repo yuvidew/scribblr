@@ -1,3 +1,5 @@
+import { Image } from 'expo-image';
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
     Modal,
@@ -8,16 +10,14 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import { Image } from 'expo-image';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from '../../components/CustomButton';
+import Spinner from '../../components/Spinner';
 import { color } from '../../constants/colors';
 import { icons } from '../../constants/icons';
-import { useGetAllUsers } from './hook/use-get-all-users';
-import Spinner from '../../components/Spinner';
-import { useFollowUser } from './hook/use-follow-user';
-import { router } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import BackArrowProgressBar from './_components/back-arrow-progressbar';
+import BackArrowProgressBar from '../../feature/auth/_components/back-arrow-progressbar';
+import { useFollowUser } from '../../feature/auth/hook/use-follow-user';
+import { useGetAllUsers } from '../../feature/auth/hook/use-get-all-users';
 
 
 

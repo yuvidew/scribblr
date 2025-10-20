@@ -24,7 +24,13 @@ const document = require("@/assets/icons/document.png");
 const document_select = require("@/assets/icons/document-selected.png");
 const createIcon = require("@/assets/icons/plus.png");
 
-const success_check = require("@/assets/icons/success-check.png")
+const success_check = require("@/assets/icons/success-check.png");
+const bookmark = require("@/assets/icons/bookmark.png");
+const bookmark_selected = require("@/assets/icons/bookmark_selected.png");
+const notification = require("@/assets/icons/notification.png");
+
+const logo = require("@/assets/icons/logo.png");
+const right_arrow = require("@/assets/icons/right-arrow.png");
 
 export const icons = {
     loader,
@@ -49,5 +55,10 @@ export const icons = {
     document,
     document_select,
     createIcon,
-    success_check
+    success_check,
+    logo,
+    bookmark,
+    bookmark_selected,
+    notification,
+    right_arrow
 }

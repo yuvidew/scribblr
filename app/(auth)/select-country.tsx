@@ -1,17 +1,17 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View, } from 'react-native'
-import React, { useMemo, useState } from 'react'
-import SearchBox from '../../components/search-box'
-import { color } from '../../constants/colors';
-import { Image } from 'expo-image'
-import { useGetCountries } from './hook/use-get-counties'
-import Spinner from '../../components/Spinner'
-import { icons } from '../../constants/icons';
-import CustomButton from '../../components/CustomButton';
-import { useStoreCountry } from '../../zustand/manage_country';
-import Toast from 'react-native-toast-message';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import BackArrowProgressBar from './_components/back-arrow-progressbar';
+import { Image } from 'expo-image';
 import { router } from 'expo-router';
+import React, { useMemo, useState } from 'react';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View, } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
+import CustomButton from '../../components/CustomButton';
+import SearchBox from '../../components/search-box';
+import Spinner from '../../components/Spinner';
+import { color } from '../../constants/colors';
+import { icons } from '../../constants/icons';
+import BackArrowProgressBar from '../../feature/auth/_components/back-arrow-progressbar';
+import { useGetCountries } from '../../feature/auth/hook/use-get-counties';
+import { useStoreCountry } from '../../zustand/manage_country';
 
 const SelectCountry = () => {
     const { isLoading, isError, data } = useGetCountries();

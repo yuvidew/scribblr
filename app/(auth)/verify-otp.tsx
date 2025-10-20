@@ -1,15 +1,15 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { color } from '../../constants/colors'
-import { router } from 'expo-router'
 import { Image } from 'expo-image'
-import { icons } from '../../constants/icons'
+import { router } from 'expo-router'
+import React, { useState } from 'react'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import Toast from 'react-native-toast-message'
 import CustomButton from '../../components/CustomButton'
 import InputField from '../../components/InputField'
+import { color } from '../../constants/colors'
+import { icons } from '../../constants/icons'
+import { useVerifyOTP } from '../../feature/auth/hook/use-verify-otp'
 import { useStoreEmail } from '../../zustand/manage_email'
-import { useVerifyOTP } from './hook/use-verify-otp'
-import Toast from 'react-native-toast-message'
 
 const VerifyOtp = () => {
     const {email} = useStoreEmail();

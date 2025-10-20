@@ -1,20 +1,20 @@
+import { Image } from "expo-image";
+import { Link, router } from "expo-router";
+import React, { useState } from "react";
 import {
+    Pressable,
     StyleSheet,
     Text,
     TouchableOpacity,
     View,
-    Pressable,
 } from "react-native";
-import React, { useState } from "react";
-import { Link, router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Image } from "expo-image";
+import Toast from "react-native-toast-message";
+import CustomButton from "../../components/CustomButton";
+import InputField from "../../components/InputField";
 import { color } from "../../constants/colors";
 import { icons } from "../../constants/icons";
-import InputField from "../../components/InputField";
-import CustomButton from "../../components/CustomButton";
-import { useSignIn } from "./hook/use-sign-in";
-import Toast from "react-native-toast-message";
+import { useSignIn } from "../../feature/auth/hook/use-sign-in";
 
 const SignInScreen = () => {
     const { mutate: onSignIn, isPending } = useSignIn();

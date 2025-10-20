@@ -1,15 +1,15 @@
-import { Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { color } from '../../constants/colors'
-import { router } from 'expo-router'
 import { Image } from 'expo-image'
-import { icons } from '../../constants/icons'
+import { router } from 'expo-router'
+import React, { useState } from 'react'
+import { Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import Toast from 'react-native-toast-message'
 import CustomButton from '../../components/CustomButton'
 import InputField from '../../components/InputField'
+import { color } from '../../constants/colors'
+import { icons } from '../../constants/icons'
+import { useResetPassword } from '../../feature/auth/hook/use-reset-password'
 import { useStoreEmail } from '../../zustand/manage_email'
-import Toast from 'react-native-toast-message'
-import { useResetPassword } from './hook/use-reset-password'
 
 const ResetPassword = () => {
     const { email, setEmail} = useStoreEmail();

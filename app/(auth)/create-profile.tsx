@@ -1,18 +1,18 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { Image } from 'expo-image'
-import { icons } from '../../constants/icons'
+import { Image } from 'expo-image';
 import * as ImagePicker from "expo-image-picker";
-import InputField from '../../components/InputField'
-import CustomButton from '../../components/CustomButton'
-import { ProfileFormType } from '../../types/type';
-import Toast from 'react-native-toast-message';
-import { useCreateProfile } from './hook/use-create-profile';
-import { useStoreCountry } from '../../zustand/manage_country';
-import { formatDateToYMD } from '../../lib/util';
-import BackArrowProgressBar from './_components/back-arrow-progressbar';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
+import CustomButton from '../../components/CustomButton';
+import InputField from '../../components/InputField';
+import { icons } from '../../constants/icons';
+import BackArrowProgressBar from '../../feature/auth/_components/back-arrow-progressbar';
+import { useCreateProfile } from '../../feature/auth/hook/use-create-profile';
+import { formatDateToYMD } from '../../lib/util';
+import { ProfileFormType } from '../../types/type';
+import { useStoreCountry } from '../../zustand/manage_country';
 // import { image } from '@/constants/image';
 
 interface Props {

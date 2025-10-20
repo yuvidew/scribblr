@@ -1,17 +1,17 @@
+import { router } from "expo-router";
+import React, { useState } from "react";
 import {
+    ScrollView,
     StyleSheet,
     Text,
-    View,
-    ScrollView,
     TouchableOpacity,
+    View,
 } from "react-native";
-import React, { useState } from "react";
-import { color } from "../../constants/colors"
-import CustomButton from "../../components/CustomButton"
-import { useSelectInterestTopics } from "./hook/use-select-interest-topics";
-import BackArrowProgressBar from "./_components/back-arrow-progressbar";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { router } from "expo-router";
+import CustomButton from "../../components/CustomButton";
+import { color } from "../../constants/colors";
+import BackArrowProgressBar from "../../feature/auth/_components/back-arrow-progressbar";
+import { useSelectInterestTopics } from "../../feature/auth/hook/use-select-interest-topics";
 
 const blogTopics = [
     "Personal Development",
