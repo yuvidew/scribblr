@@ -1,14 +1,14 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { color } from '../../constants/colors'
-import { router } from 'expo-router'
 import { Image } from 'expo-image'
-import { icons } from '../../constants/icons'
+import { router } from 'expo-router'
+import React from 'react'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import CustomButton from '../../components/CustomButton'
 import InputField from '../../components/InputField'
+import { color } from '../../constants/colors'
+import { icons } from '../../constants/icons'
+import { useVerifyEmail } from '../../feature/auth/hook/use-verify-email'
 import { useStoreEmail } from '../../zustand/manage_email'
-import { useVerifyEmail } from './hook/use-verify-email'
 
 const VerifyEmail = () => {
     const {email, setEmail} = useStoreEmail();

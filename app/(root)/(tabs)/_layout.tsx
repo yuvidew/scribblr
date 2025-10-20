@@ -11,7 +11,8 @@ const TabsLayout = () => {
                     backgroundColor: "white",
                     position: "absolute",
                     // borderTopColor: ,
-                    borderTopWidth: 1,
+                    borderColor : "transparent",
+                    borderTopWidth: 0,
                     minHeight: 70,
                 },
             }}
@@ -44,6 +45,23 @@ const TabsLayout = () => {
                     ),
                 }}
             />
+
+            <Tabs.Screen
+                name="create_article"
+                options={{
+                    title: "",
+                    headerShown: false,
+                    tabBarIcon: ({ focused }) => (
+                        <TabIcon
+                            icon={icons.createIcon}
+                            // title="Search"
+                            focused={focused}
+                            // size={35}
+                        />
+                    ),
+                }}
+            />
+
             <Tabs.Screen
                 name="my_articles"
                 options={{

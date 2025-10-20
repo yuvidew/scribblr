@@ -1,15 +1,15 @@
 
+import { router } from "expo-router";
 import React, { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { color } from "../../constants/colors";
 import Toast from "react-native-toast-message";
-import InputField from "../../components/InputField";
 import CustomButton from "../../components/CustomButton";
-import { useCreateAccount } from "./hook/use-create-account";
+import InputField from "../../components/InputField";
+import { color } from "../../constants/colors";
+import BackArrowProgressBar from "../../feature/auth/_components/back-arrow-progressbar";
+import { useCreateAccount } from "../../feature/auth/hook/use-create-account";
 import { SignupFormType } from "../../types/type";
-import BackArrowProgressBar from "./_components/back-arrow-progressbar";
-import { router } from "expo-router";
 
 
 const SignupScreen = () => {
