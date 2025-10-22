@@ -31,6 +31,9 @@ const notification = require("@/assets/icons/notification.png");
 
 const logo = require("@/assets/icons/logo.png");
 const right_arrow = require("@/assets/icons/right-arrow.png");
+const imageIcon = require("@/assets/icons/imageIcon.png");
+
+const aiIcon = require("@/assets/icons/ai.png")
 
 export const icons = {
     loader,
@@ -60,5 +63,7 @@ export const icons = {
     bookmark,
     bookmark_selected,
     notification,
-    right_arrow
+    right_arrow,
+    imageIcon,
+    aiIcon
 }
