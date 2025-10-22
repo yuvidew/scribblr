@@ -132,7 +132,7 @@ const CustomButton = ({
                     <Text style={[styles.text, getTextVariantStyle(textVariant)]}>
                         {title}
                     </Text>
-                    {IconRight && <IconRight />}
+                    {IconRight && IconRight}
                 </>
             )}
         </TouchableOpacity>
