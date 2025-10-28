@@ -72,7 +72,6 @@ export interface InputFieldProps extends TextInputProps {
 }
 
 export type ProfileFormType = {
-    image: string,
     dob: Date | undefined,
     fullname: string,
     gender: string,

@@ -15,5 +15,6 @@ export const api_end_points = {
     follow_user_api : `${base_url}/${api_version}/user/follow-unfollow`,
     verify_email : `${base_url}/${api_version}/auth/verify-email`,
     verify_otp : `${base_url}/${api_version}/auth/verify-code`,
-    reset_password : `${base_url}/${api_version}/auth/reset-password`
+    reset_password : `${base_url}/${api_version}/auth/reset-password`,
+    upload_to_app_writer : `${base_url}/${api_version}/upload-to-app-writer`
 }
