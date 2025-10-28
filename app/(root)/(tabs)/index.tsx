@@ -20,11 +20,15 @@ import CustomButton from "@/components/CustomButton";
 
 const Home = () => {
   const onLogout = async () => {
-    // await AsyncStorage.removeItem("userProfile")
-    await AsyncStorage.removeItem("accessToken")
-    // await AsyncStorage.removeItem("user_profile_id")
-
-    router.replace("/(auth)/welcome")
+    try {
+      await AsyncStorage.removeItem("userProfile")
+      await AsyncStorage.removeItem("accessToken")
+      await AsyncStorage.removeItem("user_profile_id")
+      router.replace("/(auth)/welcome")
+    } catch (error) {
+      console.error("Error during logout:", error)
+      router.replace("/(auth)/welcome")
+    }
   }
 
   return (
