@@ -13,6 +13,8 @@ import { useCreateProfile } from '../../feature/auth/hook/use-create-profile';
 import { formatDateToYMD } from '../../lib/util';
 import { ProfileFormType } from '../../types/type';
 import { useStoreCountry } from '../../zustand/manage_country';
+import { useUploadProfileImage } from '../../global-api-function/hooks/use-upload-profile-image';
+import { useStoreImage } from '../../zustand/manage_image';
 // import { image } from '@/constants/image';
 
 interface Props {
@@ -38,10 +40,10 @@ interface Props {
 
 const CreateProfile = () => {
     const { isPending, mutate, isSuccess } = useCreateProfile();
-    const { country } = useStoreCountry()
-
+    const { country } = useStoreCountry();
+    const { mutate:onUploadImage } = useUploadProfileImage();
+    const {image , setImage} = useStoreImage()
     const [form, setForm] = useState<ProfileFormType>({
-        image: "",
         dob: new Date(),
         fullname: "",
         gender: "",
@@ -68,13 +70,36 @@ const CreateProfile = () => {
             quality: 1,
         });
 
-        if (!result.canceled) {
-            setForm((prev) => ({ ...prev, image: result.assets[0].uri }));
+
+
+        if (!result.canceled && result.assets && result.assets.length > 0) {
+            const [asset] = result.assets;
+
+            if (!asset?.uri) {
+                Toast.show({
+                    type: "error",
+                    text1: "Unable to read selected image"
+                });
+                return;
+            }
+
+            setImage(asset.uri);
+
+            const formData = new FormData();
+            formData.append("file", {
+                uri: asset.uri,
+                type: asset.mimeType ?? "image/jpeg",
+                name: asset.fileName ?? "photo.jpg",
+            } as any);
+
+            onUploadImage(formData);
+
+
         }
     };
 
     const onSubmit = () => {
-        if (!form.image || !form.dob || !form.fullname || !form.gender || !form.phoneNo) {
+        if (!image || !form.dob || !form.fullname || !form.gender || !form.phoneNo) {
             Toast.show({
                 type: "error",
                 text1: "Fill all fields"
@@ -84,11 +109,7 @@ const CreateProfile = () => {
         }
 
         const formData = new FormData();
-        formData.append("file", {
-            uri: form.image,
-            type: "image/jpeg",
-            name: "photo.jpg",
-        } as any);
+        formData.append("image_url", image);
 
         formData.append("date_of_birth", formatDateToYMD(form.dob.toISOString()));
         formData.append("fullname", form.fullname);
@@ -96,14 +117,14 @@ const CreateProfile = () => {
         formData.append("phone_number", form.phoneNo);
         formData.append("country", country);
 
-        mutate(formData , {
+        mutate(formData, {
             onSuccess: (result) => {
                 console.log("the result", result);
                 if (result) {
-                    
+
                     router.push("/(auth)/sign-up")
                 }
-            }   
+            }
         })
     }
 
@@ -136,10 +157,10 @@ const CreateProfile = () => {
 
                 {/* start to upload user image */}
                 <View style={styles.upload_image_container}>
-                    {form.image ? (
+                    {image ? (
 
                         <Image
-                            source={{ uri: form.image }}
+                            source={{ uri: image }}
                             style={{
                                 width: "100%",
                                 height: "100%",
