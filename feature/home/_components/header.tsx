@@ -2,8 +2,12 @@ import { Image } from 'expo-image'
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { icons } from '../../../constants/icons'
+import { useRouter } from 'expo-router'
 
 const Header = () => {
+    const router = useRouter();
+
+
     return (
         <View style={styles.container}>
             {/* start to logo name */}
@@ -28,8 +32,9 @@ const Header = () => {
                 alignItems : "center",
                 gap : 10
             }}>
-                {/* TODO: add a route navigation to navigate notification screen*/}
-                <TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => router.push("/(root)/notification")}
+                >
                     <Image
                         source={icons.notification}
                         resizeMode="contain"
@@ -40,8 +45,7 @@ const Header = () => {
                     />
                 </TouchableOpacity>
 
-                {/* TODO: add a route navigation to navigate saved article screen*/}
-                <TouchableOpacity>
+                <TouchableOpacity  onPress={() => router.push("/(root)/bookmarks")}>
                     <Image
                         source={icons.bookmark}
                         resizeMode="contain"

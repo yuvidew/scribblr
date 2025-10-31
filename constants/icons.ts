@@ -33,7 +33,8 @@ const logo = require("@/assets/icons/logo.png");
 const right_arrow = require("@/assets/icons/right-arrow.png");
 const imageIcon = require("@/assets/icons/imageIcon.png");
 
-const aiIcon = require("@/assets/icons/ai.png")
+const aiIcon = require("@/assets/icons/ai.png");
+const settingIcon = require("@/assets/icons/settings.png");
 
 export const icons = {
     loader,
@@ -65,5 +66,6 @@ export const icons = {
     notification,
     right_arrow,
     imageIcon,
-    aiIcon
+    aiIcon,
+    settingIcon
 }

@@ -16,24 +16,29 @@ import Header from "../../../feature/home/_components/header";
 import RecentArticle from "../../../feature/home/_components/recent-article";
 import YourArticle from "../../../feature/home/_components/your-article";
 import OnYourBookmark from "../../../feature/home/_components/on-your-bookmark";
-import CustomButton from "@/components/CustomButton";
+import CustomButton from "../../../components/CustomButton";
 
 const Home = () => {
   const onLogout = async () => {
-    // await AsyncStorage.removeItem("userProfile")
-    await AsyncStorage.removeItem("accessToken")
-    // await AsyncStorage.removeItem("user_profile_id")
-
-    router.replace("/(auth)/welcome")
+    try {
+      await AsyncStorage.removeItem("userProfile")
+      await AsyncStorage.removeItem("accessToken")
+      await AsyncStorage.removeItem("user_profile_id")
+      router.replace("/(auth)/welcome")
+    } catch (error) {
+      console.error("Error during logout:", error)
+      router.replace("/(auth)/welcome")
+    }
   }
 
   return (
     <ScrollView style={styles.scroll_container}>
       <SafeAreaView style={styles.container}>
-        <CustomButton title="Logout" onPress={onLogout} />
+        {/* <CustomButton title="Logout"  onPress={onLogout} /> */}
         {/* start to header */}
         <Header />
         {/* end to header */}
+
 
         {/* start to hero image */}
         <View style={styles.hero}>

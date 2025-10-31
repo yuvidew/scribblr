@@ -1,7 +1,8 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { Image } from 'expo-image'
 import { color } from '../constants/colors'
+import { icons } from '../constants/icons'
 
 interface Props  {
     text : string,
@@ -10,6 +11,13 @@ interface Props  {
     author_text : string,
     time : string
 }
+/**
+ * @param text article headline displayed on the card
+ * @param img hero image URI for the article
+ * @param author_img author avatar URI used in the footer
+ * @param author_text author name or descriptor shown next to the avatar
+ * @param time relative time string describing when the article was published
+ */
 
 const ArticleCard = ({
     text,
@@ -19,11 +27,25 @@ const ArticleCard = ({
     time
 } : Props) => {
     return (
-        <View style = {styles.container}>
+        <TouchableOpacity style = {styles.container}>
             {/* TODO: add save button */}
-            <Image source={{
-                uri : img
-            }} resizeMode="cover" style = {styles.img}  />
+            <View style = {styles.img_container}>
+                {/* start to bookmark button */}
+                <TouchableOpacity 
+                    style = {styles.bookmark_btn} 
+                    onPress={(e) => e.stopPropagation()}
+                >
+                    <Image 
+                        source={icons.bookmark} 
+                        style = {styles.bookmark_Btn_img} 
+                        tintColor={color.success[100]}
+                    />
+                </TouchableOpacity>
+                {/* end to bookmark button */}
+                <Image source={{
+                    uri : img
+                }} resizeMode="cover" style = {styles.img}  />
+            </View>
 
             {/* start to text */}
             <Text style = {styles.text} >
@@ -59,7 +81,7 @@ const ArticleCard = ({
             </View>
             {/* end to author info */}
 
-        </View>
+        </TouchableOpacity>
     )
 }
 
@@ -72,12 +94,34 @@ const styles = StyleSheet.create({
         marginRight: 10,
         borderRadius: 10,
         gap : 10,
+        position : "relative"
+    },
+
+    img_container : {
+        width : "100%",
+        height : 200,
+        borderRadius : 15,
+        overflow : "hidden"
+    },
+
+    bookmark_btn : {
+        position :"absolute",
+        top : "5%",
+        right : "5%",
+        backgroundColor : color.primary[800],
+        zIndex : 10,
+        borderRadius : 100,
+        padding : 7
+    },
+
+    bookmark_Btn_img : {
+        width : 20,
+        height : 20
     },
 
     img : {
         width : "100%",
-        height : 200,
-        borderRadius : 15
+        height : "100%",
     },
 
     text : {
