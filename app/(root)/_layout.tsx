@@ -7,9 +7,9 @@ export default function RootLayout() {
     useEffect(() => {
         (async () => {
             const accessToken = await AsyncStorage.getItem("accessToken");
-            const userProfileId = await AsyncStorage.getItem("user_profile_id");
 
-            if (!accessToken && !userProfileId) {
+
+            if (accessToken) {
                 Toast.show({
                     type: "error",
                     text1: "Session Expired",
