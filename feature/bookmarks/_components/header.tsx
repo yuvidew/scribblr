@@ -36,7 +36,7 @@ const Header = () => {
             >
                 {/* TODO: open a new search screen */}
                 <TouchableOpacity 
-                    // onPress={() => router.push("/(root)/notification")}
+                    onPress={() => router.push("/(root)/bookmarks/search-bookmarks")}
                 >
                     <Image
                         source={icons.search}

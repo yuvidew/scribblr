@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { DimensionValue, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { Image } from 'expo-image'
 import { color } from '../constants/colors'
@@ -9,7 +9,8 @@ interface Props  {
     img : string,
     author_img : string,
     author_text : string,
-    time : string
+    time : string,
+    widthRange? : DimensionValue;
 }
 /**
  * @param text article headline displayed on the card
@@ -17,6 +18,7 @@ interface Props  {
  * @param author_img author avatar URI used in the footer
  * @param author_text author name or descriptor shown next to the avatar
  * @param time relative time string describing when the article was published
+ * @param widthRange width applied to the card container (defaults to 10%)
  */
 
 const ArticleCard = ({
@@ -24,10 +26,11 @@ const ArticleCard = ({
     img,
     author_img,
     author_text,
-    time
+    time,
+    widthRange = "6.5%"
 } : Props) => {
     return (
-        <TouchableOpacity style = {styles.container}>
+        <TouchableOpacity style = {[styles.container, {width: widthRange}]}>
             {/* TODO: add save button */}
             <View style = {styles.img_container}>
                 {/* start to bookmark button */}
@@ -89,8 +92,9 @@ export default ArticleCard
 
 const styles = StyleSheet.create({
     container : {
-        width: 230,
+        // width: 230,
         // height: 300,
+        marginBottom: 15,
         marginRight: 10,
         borderRadius: 10,
         gap : 10,
@@ -110,7 +114,7 @@ const styles = StyleSheet.create({
         right : "5%",
         backgroundColor : color.primary[800],
         zIndex : 10,
-        borderRadius : 100,
+        borderRadius : 10,
         padding : 7
     },
 
