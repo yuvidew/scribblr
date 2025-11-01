@@ -16,5 +16,9 @@ export const api_end_points = {
     verify_email : `${base_url}/${api_version}/auth/verify-email`,
     verify_otp : `${base_url}/${api_version}/auth/verify-code`,
     reset_password : `${base_url}/${api_version}/auth/reset-password`,
-    upload_to_app_writer : `${base_url}/${api_version}/upload-to-app-writer`
+    upload_to_app_writer : `${base_url}/${api_version}/upload-to-app-writer`,
+
+    // article api end points
+
+    create_article_api :  `${base_url}/${api_version}/user/generate-article-content`
 }

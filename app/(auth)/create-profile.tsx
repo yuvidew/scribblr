@@ -17,9 +17,7 @@ import { useUploadProfileImage } from '../../global-api-function/hooks/use-uploa
 import { useStoreImage } from '../../zustand/manage_image';
 // import { image } from '@/constants/image';
 
-interface Props {
-    onProgressState: () => void
-}
+
 
 /**
  * CreateProfile - A user profile creation screen with image upload, text inputs,

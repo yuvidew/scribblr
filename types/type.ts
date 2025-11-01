@@ -51,7 +51,7 @@ export type CountryListType = {
 };
 
 export interface InputFieldProps extends TextInputProps {
-    label: string;
+    label?: string;
     isPassword?: boolean;
     secureTextEntry?: boolean;
     labelStyle?: StyleProp<TextStyle>;
@@ -71,11 +71,27 @@ export interface InputFieldProps extends TextInputProps {
     onSelectedOption?: (value: string) => void,
 }
 
+export interface InputFields2Props extends InputFieldProps{
+    isInputText? : boolean,
+    isTextarea? : boolean,
+    topics?: {
+        title: string
+    }[],
+}
+
 export type ProfileFormType = {
     dob: Date | undefined,
     fullname: string,
     gender: string,
     phoneNo: string,
+}
+
+export type CreateArticleType = {
+    title : string
+    description : string
+    interest : string
+    user_id? : string
+    image_url? : string
 }
 
 export type SignupFormType = {

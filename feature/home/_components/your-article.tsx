@@ -107,12 +107,11 @@ const YourArticle = () => {
             {/* end to header and  arrow */}
 
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {
-                    articles.map((article , index) => (
-
-                        <ArticleCard key={index} {...article} />
-                    ))
-                }
+                <View style={{ flexDirection: "row" }}>
+                    {articles.map((article, index) => (
+                        <ArticleCard key={index} {...article} widthRange={230} />
+                    ))}
+                </View>
             </ScrollView>
         </View>
     )

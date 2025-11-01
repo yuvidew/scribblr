@@ -9,7 +9,7 @@ export default function RootLayout() {
             const accessToken = await AsyncStorage.getItem("accessToken");
 
 
-            if (accessToken) {
+            if (!accessToken) {
                 Toast.show({
                     type: "error",
                     text1: "Session Expired",
