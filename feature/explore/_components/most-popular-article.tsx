@@ -5,7 +5,7 @@ import { icons } from '../../../constants/icons'
 import { color } from '../../../constants/colors'
 import ArticleCard from '../../../components/article-card'
 
-const RecentArticle = () => {
+const MostPopularArticle = () => {
     const articles = [
         {
             img: "https://i.pinimg.com/1200x/a7/02/d2/a702d26b7fd0872eb8f81fd9180459fb.jpg",
@@ -90,7 +90,7 @@ const RecentArticle = () => {
         <View style={styles.container}>
             {/* start to header and  arrow */}
             <View style={styles.heading_arrow}>
-                <Text style={styles.heading}>Recent Article</Text>
+                <Text style={styles.heading}>Most popular </Text>
 
                 <TouchableOpacity>
                     <Image
@@ -107,12 +107,6 @@ const RecentArticle = () => {
             {/* end to header and  arrow */}
 
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {/* {
-                    articles.map((article , index) => (
-
-                        <ArticleCard key={index} {...article} />
-                    ))
-                } */}
                 <View style={{ flexDirection: "row" }}>
                     {articles.map((article, index) => (
                         <ArticleCard key={index} {...article} widthRange={230} />
@@ -123,7 +117,7 @@ const RecentArticle = () => {
     )
 }
 
-export default RecentArticle
+export default MostPopularArticle
 
 const styles = StyleSheet.create({
     container: {

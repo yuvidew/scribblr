@@ -37,6 +37,7 @@ const aiIcon = require("@/assets/icons/ai.png");
 const settingIcon = require("@/assets/icons/settings.png");
 const grid1Icon = require("@/assets/icons/grid-1.png");
 const grid4Icon = require("@/assets/icons/grid-4.png");
+const menuIcon = require("@/assets/icons/menu.png");
 
 export const icons = {
     loader,
@@ -71,5 +72,6 @@ export const icons = {
     aiIcon,
     settingIcon,
     grid1Icon,
-    grid4Icon
+    grid4Icon,
+    menuIcon
 }

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { Image } from 'expo-image'
-import { icons } from '../../constants/icons'
+import { icons } from '../../../constants/icons'
 
 const Header = () => {
     return (
