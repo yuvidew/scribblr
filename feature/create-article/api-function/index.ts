@@ -7,6 +7,7 @@ import { isAxiosError } from "axios";
 import { router } from "expo-router";
 
 export const onCreateArticle = async (formData: CreateArticleType) => {
+
     try {
         const { data, status } = await api.post(api_end_points.create_article_api, formData);
 
@@ -14,12 +15,12 @@ export const onCreateArticle = async (formData: CreateArticleType) => {
             Toast.show({
                 type: "success",
                 text1: data.message
-            })
+            });
 
-            router.push(`/(root)/check-read-artilce/check-article`)
+            router.push(`/(root)/created-article-details/${data.article_id}?is_publishable=yes`);
 
-            return data
-        }
+            return data;
+        };
     } catch (error) {
         if (isAxiosError(error)) {
             console.log("Error to Create profile", JSON.stringify(error));
@@ -27,33 +28,33 @@ export const onCreateArticle = async (formData: CreateArticleType) => {
                 Toast.show({
                     type: "error",
                     text1: error.response.data.message
-                })
+                });
 
-                return false
+                return false;
             } else if (error.response?.status === 404) {
                 Toast.show({
                     type: "error",
                     text1: error.response.data.message
-                })
+                });
 
-                return false
+                return false;
             } else if (error.response?.status === 500) {
                 Toast.show({
                     type: "error",
                     text1: error.response.data.message
-                })
+                });
 
-                return false
+                return false;
             } else {
                 Toast.show({
                     type: "error",
                     text1: error?.response?.data.message
-                })
+                });
 
-                return false
-            }
-        }
+                return false;
+            };
+        };
 
-        return false
+        return false;
     }
 }
