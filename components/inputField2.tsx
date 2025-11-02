@@ -5,6 +5,38 @@ import { InputFields2Props } from '../types/type'
 import { Image } from 'expo-image'
 import { icons } from '../constants/icons'
 
+/**
+ * Controlled input field that supports plain text, multiline textarea, and selectable topic modes.
+ *
+ * @param {string} [label] Optional label rendered above the input.
+ * @param {object} [labelStyle] Additional styles for the label text.
+ * @param {string} [placeholder] Placeholder text shown when no value is present.
+ * @param {boolean} [isPassword] If true, masks the input value.
+ * @param {string} [value] Current value for the input element.
+ * @param {object} [inputStyle] Custom styles for the TextInput in text modes.
+ * @param {object} [containerStyle] Custom styles for the root wrapper.
+ * @param {object} [iconStyle] Custom styles for the dropdown icon.
+ * @param {boolean} [secureTextEntry] Controls secure text entry for password fields.
+ * @param {boolean} [isSelectDate] Enables date selection mode (not currently used here).
+ * @param {string} [textContentType] Content type hint for the TextInput component.
+ * @param {Date} [selectedDate] Currently selected date value (used when date picker is active).
+ * @param {(date: Date) => void} [onChangeDate] Callback fired when a date is picked.
+ * @param {boolean} [isDropDown] Flag indicating dropdown usage (handled via topics list).
+ * @param {string[]} [options] Legacy options prop; topics array is used instead.
+ * @param {(option: string) => void} [onSelectedOption] Callback fired when a topic is chosen.
+ * @param {boolean} [isInputText] Switches component to single-line text mode.
+ * @param {boolean} [isTextarea] Switches component to multiline textarea mode.
+ * @param {{ title: string }[]} [topics] Collection of topics displayed inside the modal dropdown.
+ * @param {...any} props Additional TextInput props passed down to the rendered input.
+ *
+ * @example
+ * <InputField2
+ *   label="Topic"
+ *   placeholder="Select a topic"
+ *   topics={[{ title: "Design" }, { title: "Development" }]}
+ *   onSelectedOption={(value) => console.log(value)}
+ * />
+ */
 const InputField2 = (
     {
         label,

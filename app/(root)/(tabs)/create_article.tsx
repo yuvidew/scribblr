@@ -21,17 +21,19 @@ import { useUploadProfileImage } from "../../../global-api-function/hooks/use-up
 import { CreateArticleType } from "../../../types/type";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCreateArticle } from "../../../feature/create-article/hooks/use-create-article";
+import { router } from "expo-router";
+
 
 const CreateArticle = () => {
     const { image, setImage } = useStoreImage();
     const { mutate: onUploadImage } = useUploadProfileImage();
-    const { mutate: onCreateArticle, isPending } = useCreateArticle()
+    const { mutate: onCreateArticle, isPending } = useCreateArticle();
 
     const [form, setForm] = useState<CreateArticleType>({
         title: "",
         description: "",
         interest: "",
-    })
+    });
 
     const onPickImage = async () => {
 
@@ -44,7 +46,7 @@ const CreateArticle = () => {
                 visibilityTime: 3000,
             });
             return;
-        }
+        };
 
         const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -64,7 +66,7 @@ const CreateArticle = () => {
                     text1: "Unable to read selected image"
                 });
                 return;
-            }
+            };
 
             setImage(asset.uri);
 
@@ -101,7 +103,7 @@ const CreateArticle = () => {
                 visibilityTime: 3000,
             });
             return;
-        }
+        };
 
         if (!user_id) {
             Toast.show({
@@ -111,14 +113,14 @@ const CreateArticle = () => {
                 visibilityTime: 3000,
             });
             return;
-        }
+        };
 
         onCreateArticle({
             ...form,
             user_id: user_id as string,
             image_url: image
         });
-    }
+    };
 
     return (
         <ScrollView style={{ flex: 1 }}>
@@ -134,6 +136,20 @@ const CreateArticle = () => {
                                 resizeMode="cover"
                                 source={{ uri: image }}
                             />
+
+                            <TouchableOpacity
+                                style={styles.edit_btn}
+                                onPress={(e) => {
+                                    e.stopPropagation();
+                                    onPickImage();
+                                }}
+                            >
+                                <Image
+                                    source={icons.edit}
+                                    style={styles.edit_Btn_img}
+                                    tintColor={color.success[100]}
+                                />
+                            </TouchableOpacity>
                         </View>
                     ) : (
                         <TouchableOpacity onPress={onPickImage} style={styles.upload_image_box}>
@@ -158,7 +174,7 @@ const CreateArticle = () => {
                         onChangeText={(value) => onChangeValue("title", value)}
                     />
 
-
+                    {/* Select a category */}
                     <InputField2
                         placeholder="Select a category"
                         isDropDown
@@ -190,6 +206,24 @@ const CreateArticle = () => {
                         }
                         loading={isPending}
                         onPress={onSubmit}
+                        disabled={isPending}
+                    />
+
+                    <CustomButton
+                        title="article publishable"
+                        IconRight={
+                            <Image
+                                source={icons.aiIcon}
+                                style={{
+                                    width: 30,
+                                    height: 30,
+                                }}
+                                tintColor="#fff"
+                            />
+                        }
+                        loading={isPending}
+                        onPress={() => router.push(`/(root)/created-article-details/${6}?is_publishable=yes`)}
+                        disabled={isPending}
                     />
                 </View>
             </SafeAreaView>
@@ -220,11 +254,27 @@ const styles = StyleSheet.create({
         borderRadius: 15,
     },
 
+    edit_btn : {
+        position :"absolute",
+        bottom : "5%",
+        right : "5%",
+        backgroundColor : color.primary[800],
+        zIndex : 10,
+        borderRadius : 10,
+        padding : 7
+    },
+
+    edit_Btn_img : {
+        width : 20,
+        height : 20
+    },
+
     uploaded_image_box: {
         width: "100%",
         height: 270,
         borderRadius: 15,
         overflow: "hidden",
+        position: "relative"
     },
     uploaded_image: {
         width: "100%",

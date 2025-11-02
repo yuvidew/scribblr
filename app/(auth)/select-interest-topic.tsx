@@ -13,42 +13,9 @@ import { color } from "../../constants/colors";
 import BackArrowProgressBar from "../../feature/auth/_components/back-arrow-progressbar";
 import { useSelectInterestTopics } from "../../feature/auth/hook/use-select-interest-topics";
 
-const blogTopics = [
-    "Personal Development",
-    "Education",
-    "Design",
-    "Health",
-    "Economy",
-    "Music",
-    "Lifestyle",
-    "Technology",
-    "Travel",
-    "Food",
-    "Fashion",
-    "Sports",
-    "Science",
-    "Environment",
-    "Politics",
-    "Business",
-    "Art",
-    "Culture",
-    "Entertainment",
-    "Fitness",
-    "Parenting",
-    "Photography",
-    "Gaming",
-    "Finance",
-    "History",
-    "Books & Literature",
-    "Psychology",
-    "Social Media",
-    "Movies & TV",
-    "Automobile",
-];
+import topics from "../../lib/topics.json"
 
-interface Props {
-    onProgressState: () => void;
-}
+
 
 /**
  * SelectInterestTopic - A component that allows users to select multiple topics of interest.
@@ -98,26 +65,26 @@ const SelectInterestTopic = () => {
             {/* start to topics list */}
             <ScrollView contentContainerStyle={styles.topics_container}>
                 <View style={styles.badgeContainer}>
-                    {blogTopics.map((category, index) => (
+                    {topics.map(({title}, index) => (
                         <TouchableOpacity
                             key={index}
                             style={[
                                 styles.badge,
-                                selectTopics.includes(category)
+                                selectTopics.includes(title)
                                     ? styles.selectedBadgeBG
                                     : styles.badgeBG,
                             ]}
-                            onPress={() => onSelectTopic(category)}
+                            onPress={() => onSelectTopic(title)}
                         >
                             <Text
                                 style={[
                                     styles.badgeText,
-                                    selectTopics.includes(category)
+                                    selectTopics.includes(title)
                                         ? styles.badgeTextColor
                                         : styles.selectedBadgeTextColor,
                                 ]}
                             >
-                                {category}
+                                {title}
                             </Text>
                         </TouchableOpacity>
                     ))}
