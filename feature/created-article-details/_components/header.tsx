@@ -7,6 +7,7 @@ import { icons } from '../../../constants/icons';
 
 interface Props {
     onOpenChange : (value : boolean) => void;
+    onEdit : () => void;
 }
 
 /**
@@ -23,7 +24,7 @@ interface Props {
  *   </>
  * );
  */
-const Header = ({onOpenChange} : Props) => {
+const Header = ({onOpenChange, onEdit} : Props) => {
     const [isPublished, setIsPublished] = useState<boolean>(false);
     const [visible, setVisible] = useState<boolean>(false);
 
@@ -84,6 +85,22 @@ const Header = ({onOpenChange} : Props) => {
                                 tintColor={color.primary[800]} 
                             />
                             <Text style={{ fontSize: 16 }}>Delete article</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity 
+                            style = {styles.delete_popover}
+                            onPress={() => {
+                                setVisible(false);
+                                onEdit();
+                            }}
+                        >
+                            <Image 
+                                source={icons.edit} 
+                                style = {styles.delete_popover_icon} 
+                                resizeMode="contain" 
+                                tintColor={color.primary[800]} 
+                            />
+                            <Text style={{ fontSize: 16 }}>Edit article</Text>
                         </TouchableOpacity>
                     </View>
 

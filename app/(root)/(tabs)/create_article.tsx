@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     ScrollView,
     StyleSheet,
@@ -21,19 +21,36 @@ import { useUploadProfileImage } from "../../../global-api-function/hooks/use-up
 import { CreateArticleType } from "../../../types/type";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCreateArticle } from "../../../feature/create-article/hooks/use-create-article";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
+import { useStoreArticleForm } from "../../../zustand/manage_article_form";
 
 
 const CreateArticle = () => {
+    const { is_edit } = useLocalSearchParams();
     const { image, setImage } = useStoreImage();
     const { mutate: onUploadImage } = useUploadProfileImage();
     const { mutate: onCreateArticle, isPending } = useCreateArticle();
+    const {form:articleForm} = useStoreArticleForm()
 
+    console.log("the edit is" , is_edit);
+    
     const [form, setForm] = useState<CreateArticleType>({
         title: "",
         description: "",
         interest: "",
     });
+
+    useEffect(() => {
+        if(is_edit) {
+            setForm(() => ({
+                title : articleForm.title,
+                description : articleForm.description,
+                interest : articleForm.interest
+            }));
+
+            console.log("the from" , articleForm);
+        }
+    }, [is_edit])
 
     const onPickImage = async () => {
 
