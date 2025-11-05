@@ -4,7 +4,6 @@ import { api_end_points } from "../../../lib/api_end_point";
 import Toast from "react-native-toast-message";
 
 import { isAxiosError } from "axios";
-import { router } from "expo-router";
 
 export const onCreateArticle = async (formData: CreateArticleType) => {
 
@@ -17,8 +16,7 @@ export const onCreateArticle = async (formData: CreateArticleType) => {
                 text1: data.message
             });
 
-            router.push(`/(root)/created-article-details/${data.article_id}?is_publishable=yes`);
-
+            
             return data;
         };
     } catch (error) {
@@ -58,3 +56,4 @@ export const onCreateArticle = async (formData: CreateArticleType) => {
         return false;
     }
 }
+

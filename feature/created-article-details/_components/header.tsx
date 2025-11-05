@@ -1,13 +1,14 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { color } from '../../../constants/colors';
 import Popover from "react-native-popover-view";
 import { Image } from 'expo-image';
 import { icons } from '../../../constants/icons';
+import { usePublishArticle } from '../hooks/use-publish-aticle';
 
 interface Props {
     onOpenChange : (value : boolean) => void;
-    onEdit : () => void;
+    is_published : number
 }
 
 /**
@@ -24,9 +25,16 @@ interface Props {
  *   </>
  * );
  */
-const Header = ({onOpenChange, onEdit} : Props) => {
+const Header = ({onOpenChange, is_published} : Props) => {
+    const {mutate : onPublished} = usePublishArticle()
     const [isPublished, setIsPublished] = useState<boolean>(false);
     const [visible, setVisible] = useState<boolean>(false);
+    const menuAnchorRef = useRef<React.ComponentRef<typeof TouchableOpacity> | null>(null);
+
+
+    useEffect(() => {
+        setIsPublished(is_published === 1 ? true : false)
+    }, [is_published])
 
     return (
         <View style={styles.container}>
@@ -40,7 +48,10 @@ const Header = ({onOpenChange, onEdit} : Props) => {
                             ? styles.selectedBadgeBG
                             : styles.badgeBG,
                     ]}
-                    onPress={() => setIsPublished((prev) => !prev)}
+                    onPress={() =>{
+                        setIsPublished((prev) => !prev);
+                        onPublished();
+                    }}
                 >
                     <Text
                         style={[
@@ -54,20 +65,23 @@ const Header = ({onOpenChange, onEdit} : Props) => {
                     </Text>
                 </TouchableOpacity>
 
+                <TouchableOpacity
+                    ref={menuAnchorRef}
+                    onPress={() => setVisible(true)}
+                >
+                    <Image
+                        source={icons.menuIcon}
+                        resizeMode="contain"
+                        style={{
+                            width: 25,
+                            height: 25
+                        }}
+                    />
+                </TouchableOpacity>
+
                 <Popover
                     isVisible={visible}
-                    from={(
-                        <TouchableOpacity onPress={() => setVisible(true)}>
-                            <Image
-                                source={icons.menuIcon}
-                                resizeMode="contain"
-                                style={{
-                                    width: 25,
-                                    height: 25
-                                }}
-                            />
-                        </TouchableOpacity>
-                    )}
+                    from={menuAnchorRef as unknown as React.RefObject<React.Component>}
                     onRequestClose={() => setVisible(false)}
                 >
                     <View style={{ padding: 10}}>
@@ -87,21 +101,6 @@ const Header = ({onOpenChange, onEdit} : Props) => {
                             <Text style={{ fontSize: 16 }}>Delete article</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity 
-                            style = {styles.delete_popover}
-                            onPress={() => {
-                                setVisible(false);
-                                onEdit();
-                            }}
-                        >
-                            <Image 
-                                source={icons.edit} 
-                                style = {styles.delete_popover_icon} 
-                                resizeMode="contain" 
-                                tintColor={color.primary[800]} 
-                            />
-                            <Text style={{ fontSize: 16 }}>Edit article</Text>
-                        </TouchableOpacity>
                     </View>
 
                 </Popover>
