@@ -22,35 +22,36 @@ export const onCreateArticle = async (formData: CreateArticleType) => {
     } catch (error) {
         if (isAxiosError(error)) {
             console.log("Error to Create profile", JSON.stringify(error));
-            if (error.response?.status === 401) {
+            if (error.response?.status && [401, 404, 500].includes(error.response.status)) {
                 Toast.show({
                     type: "error",
                     text1: error.response.data.message
                 });
 
                 return false;
-            } else if (error.response?.status === 404) {
-                Toast.show({
-                    type: "error",
-                    text1: error.response.data.message
-                });
+            } 
+            // else if (error.response?.status === 404) {
+            //     Toast.show({
+            //         type: "error",
+            //         text1: error.response.data.message
+            //     });
 
-                return false;
-            } else if (error.response?.status === 500) {
-                Toast.show({
-                    type: "error",
-                    text1: error.response.data.message
-                });
+            //     return false;
+            // } else if (error.response?.status === 500) {
+            //     Toast.show({
+            //         type: "error",
+            //         text1: error.response.data.message
+            //     });
 
-                return false;
-            } else {
-                Toast.show({
-                    type: "error",
-                    text1: error?.response?.data.message
-                });
+            //     return false;
+            // } else {
+            //     Toast.show({
+            //         type: "error",
+            //         text1: error?.response?.data.message
+            //     });
 
-                return false;
-            };
+            //     return false;
+            // };
         };
 
         return false;
