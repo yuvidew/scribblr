@@ -4,7 +4,6 @@ import { api_end_points } from "../../../lib/api_end_point";
 import Toast from "react-native-toast-message";
 
 import { isAxiosError } from "axios";
-import { router } from "expo-router";
 
 export const onCreateArticle = async (formData: CreateArticleType) => {
 
@@ -17,44 +16,45 @@ export const onCreateArticle = async (formData: CreateArticleType) => {
                 text1: data.message
             });
 
-            router.push(`/(root)/created-article-details/${data.article_id}?is_publishable=yes`);
-
+            
             return data;
         };
     } catch (error) {
         if (isAxiosError(error)) {
             console.log("Error to Create profile", JSON.stringify(error));
-            if (error.response?.status === 401) {
+            if (error.response?.status && [401, 404, 500].includes(error.response.status)) {
                 Toast.show({
                     type: "error",
                     text1: error.response.data.message
                 });
 
                 return false;
-            } else if (error.response?.status === 404) {
-                Toast.show({
-                    type: "error",
-                    text1: error.response.data.message
-                });
+            } 
+            // else if (error.response?.status === 404) {
+            //     Toast.show({
+            //         type: "error",
+            //         text1: error.response.data.message
+            //     });
 
-                return false;
-            } else if (error.response?.status === 500) {
-                Toast.show({
-                    type: "error",
-                    text1: error.response.data.message
-                });
+            //     return false;
+            // } else if (error.response?.status === 500) {
+            //     Toast.show({
+            //         type: "error",
+            //         text1: error.response.data.message
+            //     });
 
-                return false;
-            } else {
-                Toast.show({
-                    type: "error",
-                    text1: error?.response?.data.message
-                });
+            //     return false;
+            // } else {
+            //     Toast.show({
+            //         type: "error",
+            //         text1: error?.response?.data.message
+            //     });
 
-                return false;
-            };
+            //     return false;
+            // };
         };
 
         return false;
     }
 }
+

@@ -71,9 +71,9 @@ export interface InputFieldProps extends TextInputProps {
     onSelectedOption?: (value: string) => void,
 }
 
-export interface InputFields2Props extends InputFieldProps{
-    isInputText? : boolean,
-    isTextarea? : boolean,
+export interface InputFields2Props extends InputFieldProps {
+    isInputText?: boolean,
+    isTextarea?: boolean,
     topics?: {
         title: string
     }[],
@@ -87,11 +87,11 @@ export type ProfileFormType = {
 }
 
 export type CreateArticleType = {
-    title : string
-    description : string
-    interest : string
-    user_id? : string
-    image_url? : string
+    title: string
+    description: string
+    interest: string
+    user_id?: string
+    image_url?: string
 }
 
 export type SignupFormType = {
@@ -106,12 +106,43 @@ export type UserType = {
     profile_id: number;
     fullname: string;
     phone_number: string;
-    date_of_birth: string; 
+    date_of_birth: string;
     image_url: string;
     followers: number;
     gender: "Male" | "Female" | string;
     country: string;
-    created_at: string; 
-    updated_at: string; 
-    follow: boolean | number; 
+    created_at: string;
+    updated_at: string;
+    follow: boolean | number;
 };
+
+export type ArticleResponse = {
+    code: number;
+    message: string;
+    data: {
+        article: {
+            id: number;
+            title: string;
+            description: string;
+            ai_generated_content: string;
+            image_url: string;
+            category: string;
+            like_count: number;
+            comment_count: number;
+            created_at: string;
+            is_bookmarked: number;
+            is_published: number;
+        };
+        author: {
+            id: number;
+            name: string;
+            profile_image: string;
+        };
+    };
+};
+
+export type PublishedArticleResponse = {
+    code: number;
+    message: string;
+}
+
