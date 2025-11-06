@@ -17,17 +17,19 @@ const ArticleDetails = () => {
 
     const [open, setOpen] = useState(false);
 
+    const article = data  ? data.article : undefined;
+
     return (
         <>
             <ScrollView style={styles.scroll_container}>
                 <SafeAreaView style={styles.container}>
                     {/* start to header */}
-                    <Header onOpenChange={setOpen} is_published={data?.article.is_published as number} />
+                    <Header onOpenChange={setOpen} is_published={article?.is_published as number} />
                     {/* end to header */}
 
                     {isPending ? (
                         <LoadingState />
-                    ) : isError ? (
+                    ) : isError || !article  ? (
                         <ErrorState />
                     ) : (
                         <View style={{
@@ -41,7 +43,7 @@ const ArticleDetails = () => {
                                     style={styles.image}
                                     resizeMode="cover"
                                     source={{
-                                        uri: data?.article.image_url,
+                                        uri: article.image_url,
                                     }}
                                 />
                             </View>
@@ -49,12 +51,12 @@ const ArticleDetails = () => {
 
                             {/* start to article title */}
                             <Text style={styles.article_title}>
-                                {data?.article.title}
+                                {article.title}
                             </Text>
                             {/* end to article title */}
 
                             <TouchableOpacity style={styles.badge}>
-                                <Text style={styles.badgeText}>{data?.article.category}</Text>
+                                <Text style={styles.badgeText}>{article.category}</Text>
                             </TouchableOpacity>
 
                             <Markdown
@@ -159,7 +161,7 @@ const ArticleDetails = () => {
                                     },
                                 }}
                             >
-                                {data?.article.ai_generated_content}
+                                {article.ai_generated_content}
                             </Markdown>
                         </View>
                     )}
