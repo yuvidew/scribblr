@@ -223,7 +223,7 @@ const CreateArticle = () => {
                             />
                         }
                         loading={isPending}
-                        onPress={() => router.push(`/(root)/created-article-details/${8}?is_publishable=yes`)}
+                        onPress={() => router.push(`/(root)/created-article-details/${1}?is_publishable=yes`)}
                         disabled={isPending}
                     />
                 </View>

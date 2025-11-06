@@ -5,10 +5,11 @@ import Popover from "react-native-popover-view";
 import { Image } from 'expo-image';
 import { icons } from '../../../constants/icons';
 import { usePublishArticle } from '../hooks/use-publish-aticle';
+import { router } from 'expo-router';
 
 interface Props {
-    onOpenChange : (value : boolean) => void;
-    is_published : number
+    onOpenChange: (value: boolean) => void;
+    is_published: number
 }
 
 /**
@@ -25,8 +26,8 @@ interface Props {
  *   </>
  * );
  */
-const Header = ({onOpenChange, is_published} : Props) => {
-    const {mutate : onPublished} = usePublishArticle()
+const Header = ({ onOpenChange, is_published }: Props) => {
+    const { mutate: onPublished } = usePublishArticle()
     const [isPublished, setIsPublished] = useState<boolean>(false);
     const [visible, setVisible] = useState<boolean>(false);
     const menuAnchorRef = useRef<React.ComponentRef<typeof TouchableOpacity> | null>(null);
@@ -38,7 +39,22 @@ const Header = ({onOpenChange, is_published} : Props) => {
 
     return (
         <View style={styles.container}>
+            {/* start to logo name */}
+            <View style={styles.image_box}>
+                <TouchableOpacity onPress={() => router.back()}>
+                    <Image
+                        source={icons.backArrow}
+                        resizeMode="contain"
+                        style={{
+                            width: 25,
+                            height: 25,
+                        }}
+                    />
+                </TouchableOpacity>
+
             <Text style={styles.header_heading}>Created article</Text>
+            </View>
+            {/* end to logo name */}
 
             <View style={styles.published_box}>
                 <TouchableOpacity
@@ -48,7 +64,7 @@ const Header = ({onOpenChange, is_published} : Props) => {
                             ? styles.selectedBadgeBG
                             : styles.badgeBG,
                     ]}
-                    onPress={() =>{
+                    onPress={() => {
                         setIsPublished((prev) => !prev);
                         onPublished();
                     }}
@@ -74,7 +90,8 @@ const Header = ({onOpenChange, is_published} : Props) => {
                         resizeMode="contain"
                         style={{
                             width: 25,
-                            height: 25
+                            height: 25,
+                            marginTop : -8
                         }}
                     />
                 </TouchableOpacity>
@@ -84,19 +101,19 @@ const Header = ({onOpenChange, is_published} : Props) => {
                     from={menuAnchorRef as unknown as React.RefObject<React.Component>}
                     onRequestClose={() => setVisible(false)}
                 >
-                    <View style={{ padding: 10}}>
-                        <TouchableOpacity 
-                            style = {styles.delete_popover}
+                    <View style={{ padding: 10 }}>
+                        <TouchableOpacity
+                            style={styles.delete_popover}
                             onPress={() => {
                                 setVisible(false);
                                 onOpenChange(true);
                             }}
                         >
-                            <Image 
-                                source={icons.deleteIcon} 
-                                style = {styles.delete_popover_icon} 
-                                resizeMode="contain" 
-                                tintColor={color.primary[800]} 
+                            <Image
+                                source={icons.deleteIcon}
+                                style={styles.delete_popover_icon}
+                                resizeMode="contain"
+                                tintColor={color.primary[800]}
                             />
                             <Text style={{ fontSize: 16 }}>Delete article</Text>
                         </TouchableOpacity>
@@ -123,7 +140,8 @@ const styles = StyleSheet.create({
 
     header_heading: {
         fontFamily: "Jakarta-Bold",
-        fontSize: 23
+        fontSize: 23,
+        marginTop : -6
     },
 
     published_box: {
@@ -165,18 +183,29 @@ const styles = StyleSheet.create({
         backgroundColor: color.primary[800],
     },
 
-    delete_popover : {
-        display : "flex",
-        flexDirection : "row",
-        alignItems : "center",
-        gap : 10,
-        width : "100%",
-        padding : 8,
-        borderRadius : 20
+    delete_popover: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 10,
+        width: "100%",
+        padding: 8,
+        borderRadius: 20
     },
 
-    delete_popover_icon : {
-        width : 23,
-        height : 23
-    }
+    delete_popover_icon: {
+        width: 23,
+        height: 23
+    },
+    image_box: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 10,
+    },
+
+    logo_text: {
+        fontFamily: "Jakarta-SemiBold",
+        fontSize: 23,
+        
+    },
 })

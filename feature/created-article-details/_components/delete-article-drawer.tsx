@@ -3,6 +3,7 @@ import { Text, Animated, Dimensions, TouchableWithoutFeedback, StyleSheet, View 
 import { BlurView } from 'expo-blur';
 import { color } from '../../../constants/colors';
 import CustomButton from '../../../components/CustomButton';
+import { useDeleteArticleById } from '../hooks/use-delete-article-by-id';
 
 const screenHeight = Dimensions.get('window').height;
 
@@ -26,9 +27,10 @@ interface Props {
  * );
  */
 const DeleteArticleDrawer = ({ open, onOpenChange }: Props) => {
+    const {mutate: onDeleteArticle, isPending} = useDeleteArticleById();
     const drawerAnim = useRef(new Animated.Value(screenHeight)).current;
     const backdropAnim = useRef(new Animated.Value(0)).current;
-    const [visible, setVisible] = useState(open); // track visibility
+    const [visible, setVisible] = useState(open); 
 
     useEffect(() => {
         if (open) setVisible(true);
@@ -45,7 +47,7 @@ const DeleteArticleDrawer = ({ open, onOpenChange }: Props) => {
                 useNativeDriver: true,
             }),
         ]).start(() => {
-            if (!open) setVisible(false); // hide after close animation
+            if (!open) setVisible(false); 
         });
     }, [open]);
 
@@ -114,7 +116,13 @@ const DeleteArticleDrawer = ({ open, onOpenChange }: Props) => {
                                 rounded="full" 
                                 textVariant="primary"
                             />
-                            <CustomButton title='Delete' width="half" rounded="full" />
+                            <CustomButton 
+                                title='Delete' 
+                                width="half"
+                                rounded="full" 
+                                onPress={onDeleteArticle}
+                                loading = {isPending}
+                            />
                         </View>
                     </View>
 

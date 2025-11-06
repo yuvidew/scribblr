@@ -23,4 +23,5 @@ export const api_end_points = {
     create_article_api :  `${base_url}/${api_version}/user/generate-article-content`,
     get_article_by_id : `${base_url}/${api_version}/user/get-article-by-id`,
     publish_article : `${base_url}/${api_version}/user/set-publish-article`,
+    delete_article_by_id : `${base_url}/${api_version}/user/delete-article-by-id`
 }
