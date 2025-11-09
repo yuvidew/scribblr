@@ -21,7 +21,7 @@ import { useUploadProfileImage } from "../../../global-api-function/hooks/use-up
 import { CreateArticleType } from "../../../types/type";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCreateArticle } from "../../../feature/create-article/hooks/use-create-article";
-import { router } from "expo-router";
+
 
 
 const CreateArticle = () => {
@@ -207,23 +207,6 @@ const CreateArticle = () => {
                         }
                         loading={isPending}
                         onPress={onSubmit}
-                        disabled={isPending}
-                    />
-
-                    <CustomButton
-                        title="article publishable"
-                        IconRight={
-                            <Image
-                                source={icons.aiIcon}
-                                style={{
-                                    width: 30,
-                                    height: 30,
-                                }}
-                                tintColor="#fff"
-                            />
-                        }
-                        loading={isPending}
-                        onPress={() => router.push(`/(root)/created-article-details/${1}?is_publishable=yes`)}
                         disabled={isPending}
                     />
                 </View>
