@@ -44,3 +44,56 @@ export const  formatDateToYMD = (dateInput : string) => {
   return `${year}-${month}-${day}`;
 }
 
+type TimeAgoOptions = {
+  addSuffix?: boolean;          
+  now?: Date | string | number; 
+};
+
+export function timeAgo(
+  input: Date | string | number,
+  opts: TimeAgoOptions = {}
+): string {
+  const { addSuffix = true, now } = opts;
+
+  const date = new Date(input);
+  if (isNaN(date.getTime())) return '';
+
+  const nowDate = now ? new Date(now) : new Date();
+  const diffMs = date.getTime() - nowDate.getTime(); // +future, -past
+  const seconds = Math.max(1, Math.floor(Math.abs(diffMs) / 1000)); // at least 1s
+
+  // Using pragmatic month (30d) & year (365d) approximations
+  const units = [
+    { label: 'year',   secs: 365 * 24 * 60 * 60 },
+    { label: 'month',  secs:  30 * 24 * 60 * 60 },
+    { label: 'week',   secs:   7 * 24 * 60 * 60 },
+    { label: 'day',    secs:      24 * 60 * 60 },
+    { label: 'hour',   secs:           60 * 60 },
+    { label: 'min',    secs:                60 },
+    { label: 'second', secs:                 1 },
+  ] as const;
+
+  let value = 1;
+  let label: string = 'second';
+
+  for (const u of units) {
+    const v = Math.floor(seconds / u.secs);
+    if (v >= 1) {
+      value = v;
+      label = u.label;
+      break;
+    }
+  }
+
+  // Pretty labels: "min" → "minute"
+  const pretty =
+    label === 'min' ? 'minute' :
+    label === 'second' ? 'second' :
+    label; // year, month, week, day, hour
+
+  const plural = value === 1 ? '' : 's';
+  const core = `${value} ${pretty}${plural}`;
+
+  if (!addSuffix) return core;
+  return diffMs < 0 ? `${core} ago` : `in ${core}`;
+}

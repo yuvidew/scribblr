@@ -4,8 +4,19 @@ import { Image } from 'expo-image'
 import { icons } from '../../../constants/icons'
 import { color } from '../../../constants/colors'
 import ArticleCard from '../../../components/article-card'
+import { useGetMyBookmarkArticles } from '../hook/use-get-my-bookmark-articles';
+import LoadingState from '../../../components/loading-state'
+import ErrorState from '../../../components/Error-state'
+import { timeAgo } from '../../../lib/util'
 
 const OnYourBookmark = () => {
+    const { data, isError, isPending } = useGetMyBookmarkArticles();
+
+
+    if (isPending) return <LoadingState />;
+    if (isError) return <ErrorState title="Failed to fetch recent article" />;
+    if (!data) return <ErrorState title="No recent articles yet" />;
+
     const articles = [
         {
             img: "https://i.pinimg.com/1200x/a7/02/d2/a702d26b7fd0872eb8f81fd9180459fb.jpg",
@@ -108,8 +119,17 @@ const OnYourBookmark = () => {
 
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View style={{ flexDirection: "row" }}>
-                    {articles.map((article, index) => (
-                        <ArticleCard key={index} {...article} widthRange={230} />
+                {data.map(({ title, image_url, created_at, author_name, author_image , is_bookmarked}, index) => (
+                        <ArticleCard
+                            key={index}
+                            widthRange={230}
+                            title={title}
+                            img={image_url}
+                            author_img={author_image}
+                            time={timeAgo(created_at)}
+                            author_name={author_name}
+                            is_bookmarked = {is_bookmarked === 0 }
+                        />
                     ))}
                 </View>
             </ScrollView>

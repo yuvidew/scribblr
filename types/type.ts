@@ -141,6 +141,30 @@ export type ArticleResponse = {
     };
 };
 
+
+
+export type ArticlesResponse = {
+    articles: {
+        article_id: number;
+        title: string;
+        description: string;
+        ai_generated_content: string;
+        category: string;
+        image_url: string;
+        like_count: number;
+        comment_count: number;
+        author_id: number;
+        created_at: string; // ISO date string
+        updated_at: string; // ISO date string
+        is_published: number; // 0 or 1
+        is_bookmarked: boolean | number; // depending on how backend returns it
+        profile_id: number;
+        author_name: string;
+        author_image: string;
+    }[]
+};
+
+
 export type PublishedArticleResponse = {
     code: number;
     message: string;
