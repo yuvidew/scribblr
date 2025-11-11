@@ -109,6 +109,7 @@ const MostPopularArticle = () => {
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View style={{ flexDirection: "row" }}>
                     {articles.map((article, index) => (
+                        // TODO: fix key issue
                         <ArticleCard key={index} {...article} widthRange={230} />
                     ))}
                 </View>

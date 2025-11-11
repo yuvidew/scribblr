@@ -3,8 +3,10 @@ import React from 'react'
 import { Image } from 'expo-image'
 import { color } from '../constants/colors'
 import { icons } from '../constants/icons'
+import { useAddAndRemoveBookmarks } from '../global-api-function/hooks/use-add-and-remove-bookmarks'
 
 interface Props {
+    article_id : number,
     title: string,
     img: string,
     author_img: string,
@@ -23,6 +25,7 @@ interface Props {
  */
 
 const ArticleCard = ({
+    article_id,
     title,
     img,
     author_img,
@@ -31,6 +34,7 @@ const ArticleCard = ({
     widthRange = "6.5%",
     is_bookmarked
 }: Props) => {
+    const {mutate : onAddAndRemoveBookmark} = useAddAndRemoveBookmarks();
     return (
         <TouchableOpacity style={[styles.container, { width: widthRange }]}>
             {/* TODO: add save button */}
@@ -38,7 +42,10 @@ const ArticleCard = ({
                 {/* start to bookmark button */}
                 <TouchableOpacity
                     style={styles.bookmark_btn}
-                    onPress={(e) => e.stopPropagation()}
+                    onPress={(e) => {
+                        e.stopPropagation()
+                        onAddAndRemoveBookmark(article_id);
+                    } }
                 >
                     <Image
                         source={is_bookmarked 

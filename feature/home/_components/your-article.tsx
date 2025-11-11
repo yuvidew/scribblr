@@ -39,11 +39,12 @@ const YourArticle = () => {
 
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View style={{ flexDirection: "row" }}>
-                    {data.map(({ title, image_url, created_at, author_name, author_image , is_bookmarked}, index) => (
+                    {data.map(({ title, article_id, image_url, created_at, author_name, author_image , is_bookmarked}, index) => (
                         <ArticleCard
                             key={index}
                             widthRange={230}
                             title={title}
+                            article_id = {article_id}
                             img={image_url}
                             author_img={author_image}
                             time={timeAgo(created_at)}
