@@ -6,10 +6,8 @@ import { isAxiosError } from "axios";
 import Toast from "react-native-toast-message";
 
 export const getGetRecentArticle = async () => {
-    const user_id = await AsyncStorage.getItem("user_profile_id");
     try {
-        if (!user_id) throw new Error("Missing user id");
-        const { data, status } = await api.get<ArticlesResponse>(`${api_end_points.get_recent_articles}/${user_id}`)
+        const { data, status } = await api.get<ArticlesResponse>(`${api_end_points.get_recent_articles}`)
 
 
 
@@ -39,6 +37,7 @@ export const getGetYourArticle = async () => {
         const { data, status } = await api.get<ArticlesResponse>(`${api_end_points.get_your_articles}/${user_id}`)
 
 
+        console.log("the response data" , data);
 
         if (status === 200) {
             return data.articles ?? [];
