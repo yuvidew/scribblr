@@ -4,6 +4,7 @@ import { Image } from 'expo-image'
 import { color } from '../constants/colors'
 import { icons } from '../constants/icons'
 import { useAddAndRemoveBookmarks } from '../global-api-function/hooks/use-add-and-remove-bookmarks'
+import { router } from 'expo-router'
 
 interface Props {
     article_id : number,
@@ -16,13 +17,28 @@ interface Props {
     is_bookmarked : boolean
 }
 /**
- * @param title article headline displayed on the card
- * @param img hero image URI for the article
- * @param author_img author avatar URI used in the footer
- * @param author_name author name or descriptor shown next to the avatar
- * @param time relative time string describing when the article was published
- * @param widthRange width applied to the card container (defaults to 10%)
+ * Article card component used in the feed list.
+ *
+ * @param {number} article_id - Unique ID of the article.
+ * @param {string} title - Title of the article.
+ * @param {string} img - Main cover image URL of the article.
+ * @param {string} author_img - Author's profile image URL.
+ * @param {string} author_name - Full name of the author.
+ * @param {string} time - Time label (e.g., "2h ago", "Yesterday").
+ * @param {boolean} is_bookmarked - Whether the article is already bookmarked or not.
+ *
+ * @example
+ * <ArticleCard
+ *    article_id={12}
+ *    title="The Future of AI in India"
+ *    img="https://example.com/article-image.jpg"
+ *    author_img="https://example.com/profile.jpg"
+ *    author_name="Yuvraj Dewangan"
+ *    time="5 min ago"
+ *    is_bookmarked={true}
+ * />
  */
+
 
 const ArticleCard = ({
     article_id,
@@ -36,7 +52,10 @@ const ArticleCard = ({
 }: Props) => {
     const {mutate : onAddAndRemoveBookmark} = useAddAndRemoveBookmarks();
     return (
-        <TouchableOpacity style={[styles.container, { width: widthRange }]}>
+        <TouchableOpacity 
+            style={[styles.container, { width: widthRange }]}
+            onPress={() => router.push(`/(root)/article-details/${article_id}`)}
+        >
             {/* TODO: add save button */}
             <View style={styles.img_container}>
                 {/* start to bookmark button */}
@@ -45,7 +64,7 @@ const ArticleCard = ({
                     onPress={(e) => {
                         e.stopPropagation()
                         onAddAndRemoveBookmark(article_id);
-                    } }
+                    }}
                 >
                     <Image
                         source={is_bookmarked 

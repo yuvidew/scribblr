@@ -58,7 +58,7 @@ export const getGetYourArticle = async () => {
     }
 };
 
-export const getMyBookmarksArtilce = async () => {
+export const getMyBookmarksArticle = async () => {
     const user_id = await AsyncStorage.getItem("user_profile_id");
     try {
         if (!user_id) throw new Error("Missing user id");

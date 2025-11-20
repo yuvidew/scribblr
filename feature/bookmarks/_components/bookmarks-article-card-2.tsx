@@ -3,30 +3,51 @@ import React from 'react'
 import { Image } from 'expo-image'
 import { color } from '../../../constants/colors'
 import { icons } from '../../../constants/icons'
+import { useAddAndRemoveBookmarks } from '../../../global-api-function/hooks/use-add-and-remove-bookmarks'
 
 interface Props {
-    text: string,
+    article_id: number,
+    title: string,
     img: string,
     author_img: string,
-    author_text: string,
+    author_name: string,
     time: string,
+    is_bookmarked: boolean
 }
 /**
- * @param text article headline displayed on the card
- * @param img hero image URI for the article
- * @param author_img author avatar URI used in the footer
- * @param author_text author name or descriptor shown next to the avatar
- * @param time relative time string describing when the article was published
- * @param widthRange width applied to the card container (defaults to 10%)
+ * Article card component used in the feed list.
+ *
+ * @param {number} article_id - Unique ID of the article.
+ * @param {string} title - Title of the article.
+ * @param {string} img - Main cover image URL of the article.
+ * @param {string} author_img - Author's profile image URL.
+ * @param {string} author_name - Full name of the author.
+ * @param {string} time - Time label (e.g., "2h ago", "Yesterday").
+ * @param {boolean} is_bookmarked - Whether the article is already bookmarked or not.
+ *
+ * @example
+ * <ArticleCard2
+ *    article_id={12}
+ *    title="The Future of AI in India"
+ *    img="https://example.com/article-image.jpg"
+ *    author_img="https://example.com/profile.jpg"
+ *    author_name="Yuvraj Dewangan"
+ *    time="5 min ago"
+ *    is_bookmarked={true}
+ * />
  */
 
+
 const ArticleCard2 = ({
-    text,
+    article_id,
+    title,
     img,
     author_img,
-    author_text,
+    author_name,
     time,
+    is_bookmarked
 }: Props) => {
+    const { mutate: onAddAndRemoveBookmark } = useAddAndRemoveBookmarks();
     return (
         <TouchableOpacity style={styles.container}>
             {/* TODO: add save button */}
@@ -45,19 +66,20 @@ const ArticleCard2 = ({
             }}>
 
                 {/* start to text */}
-                <Text style={styles.text} >
-                    {text.length < 45 ? text : `${text.slice(0, 39)}....`}
-                    {/* {text} */}
+                <Text style={styles.text} numberOfLines={2}
+                    ellipsizeMode="tail"
+                    accessibilityLabel={title}>
+                    {title.length < 38 ? title : `${title.slice(0, 39)}....`}
                 </Text>
                 {/* end to text */}
-                <View style = {{
-                    display : "flex",
-                    gap : 4
+                <View style={{
+                    display: "flex",
+                    gap: 4
                 }}>
                     <View style={styles.author_image_text}>
                         <Image
                             source={{
-                                uri: author_img
+                                uri: author_img || "https://i.pinimg.com/736x/3c/ae/07/3cae079ca0b9e55ec6bfc1b358c9b1e2.jpg"
                             }}
 
                             resizeMode="cover"
@@ -65,7 +87,7 @@ const ArticleCard2 = ({
                         />
 
                         <Text style={styles.author_text}>
-                            {author_text}
+                            {author_name}
                         </Text>
                     </View>
                     {/* start to author info */}
@@ -83,10 +105,16 @@ const ArticleCard2 = ({
                         {/* start to bookmark button */}
                         <TouchableOpacity
                             style={styles.bookmark_btn}
-                            onPress={(e) => e.stopPropagation()}
+                            onPress={(e) => {
+                                e.stopPropagation();
+                                onAddAndRemoveBookmark(article_id);
+                            }}
                         >
                             <Image
-                                source={icons.bookmark_selected}
+                                source={is_bookmarked
+                                    ? icons.bookmark
+                                    : icons.bookmark_selected
+                                }
                                 style={styles.bookmark_Btn_img}
                                 tintColor={color.primary[800]}
                             />
