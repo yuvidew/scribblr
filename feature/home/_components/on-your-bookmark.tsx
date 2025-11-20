@@ -14,8 +14,8 @@ const OnYourBookmark = () => {
 
 
     if (isPending) return <LoadingState />;
-    if (isError) return <ErrorState title="Failed to fetch recent article" />;
-    if (!data) return <ErrorState title="No recent articles yet" />;
+    if (isError) return <ErrorState title="Failed to fetch bookmark article" />;
+    if (!data) return <ErrorState title="No bookmark articles yet" />;
 
 
 

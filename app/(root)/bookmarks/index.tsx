@@ -13,6 +13,10 @@ import { icons } from "../../../constants/icons";
 import { color } from "../../../constants/colors";
 import ArticleCard from "../../..//feature/bookmarks/_components/bookmarks-article-card";
 import ArticleCard2 from "../../../feature/bookmarks/_components/bookmarks-article-card-2";
+import { useGetMyBookmarkArticles } from "../../../feature/home/hook/use-get-my-bookmark-articles";
+import LoadingState from "../../../components/loading-state";
+import ErrorState from "../../../components/Error-state";
+import { timeAgo } from "../../../lib/util";
 
 const articles = [
     {
@@ -106,6 +110,7 @@ const articles = [
 ];
 
 const Bookmarks = () => {
+    const { data, isError, isPending } = useGetMyBookmarkArticles();
     const [selectDisplayCard, setSelectDisplayCard] = useState<
         "grid-1" | "grid-4"
     >("grid-1");
@@ -165,7 +170,13 @@ const Bookmarks = () => {
                 </View>
                 {/* end to article count and grid options */}
 
-                {selectDisplayCard === "grid-4" ? (
+                {isPending ? (
+                    <LoadingState />
+                ) : isError ? (
+                    <ErrorState title="Failed to fetch bookmark article" />
+                ) : !data ? (
+                    <ErrorState title="No bookmark articles yet" />
+                ) : selectDisplayCard === "grid-4" ? (
                     <View
                         style={{
                             flexDirection: "row",
@@ -173,14 +184,56 @@ const Bookmarks = () => {
                             justifyContent: "space-between",
                         }}
                     >
-                        {articles.map((article, index) => (
-                            <ArticleCard key={index} {...article} />
-                        ))}
+                        {data.map(
+                            (
+                                {
+                                    title,
+                                    article_id,
+                                    image_url,
+                                    created_at,
+                                    author_name,
+                                    author_image,
+                                    is_bookmarked,
+                                },
+                                index
+                            ) => (
+                                <ArticleCard
+                                    key={index}
+                                    title={title}
+                                    article_id={article_id}
+                                    img={image_url}
+                                    author_img={author_image}
+                                    time={timeAgo(created_at)}
+                                    author_name={author_name}
+                                    is_bookmarked={is_bookmarked === 0}
+                                />
+                            )
+                        )}
                     </View>
                 ) : (
-                    articles.map((article, index) => (
-                        <ArticleCard2 key={index} {...article} />
-                    ))
+                    data.map((
+                                {
+                                    title,
+                                    article_id,
+                                    image_url,
+                                    created_at,
+                                    author_name,
+                                    author_image,
+                                    is_bookmarked,
+                                },
+                                index
+                            ) => (
+                                <ArticleCard2
+                                    key={index}
+                                    title={title}
+                                    article_id={article_id}
+                                    img={image_url}
+                                    author_img={author_image}
+                                    time={timeAgo(created_at)}
+                                    author_name={author_name}
+                                    is_bookmarked={is_bookmarked === 0}
+                                />
+                            ))
                 )}
 
                 {/* end to bookmarks article cards */}
