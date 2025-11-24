@@ -264,39 +264,7 @@ export const getAllUsers = async (): Promise<UserType[]> => {
 }
 
 
-export const followUser = async ( user_id : number) => {
-    try {
-        const profile_id = await AsyncStorage.getItem("userProfile");
-        const { data, status } = await api.post(api_end_points.follow_user_api, { user_profile_id: profile_id, following_profile_id : Number(user_id) });
-        if (status === 200) {
-            Toast.show({
-                type: "success",
-                text1: data.message
-            })
-            
-        }   
-        
-    } catch (error) {
 
-        if (isAxiosError(error)) {
-            console.log("Error to Follow user", error);
-            if (error.response?.status === 400) {
-                Toast.show({
-                    type: "error",
-                    text1: error.response.data.message
-                })
-                
-            } else if (error.response?.status === 500) {
-                Toast.show({
-                    type: "error",
-                    text1: error.response.data.message
-                })
-                
-            }
-        }
-        
-    }
-}
 
 type signInFromType = {
     email: string,

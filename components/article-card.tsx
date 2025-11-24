@@ -56,7 +56,6 @@ const ArticleCard = ({
             style={[styles.container, { width: widthRange }]}
             onPress={() => router.push(`/(root)/article-details/${article_id}`)}
         >
-            {/* TODO: add save button */}
             <View style={styles.img_container}>
                 {/* start to bookmark button */}
                 <TouchableOpacity

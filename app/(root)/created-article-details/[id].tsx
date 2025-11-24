@@ -1,14 +1,14 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import Header from "../../../feature/created-article-details/_components/header";
-import DeleteArticleDrawer from "../../../feature/created-article-details/_components/delete-article-drawer";
 import { Image } from "expo-image";
-import Markdown from "react-native-markdown-display";
-import { color } from "../../../constants/colors";
-import { useGetArticleById } from "../../../feature/created-article-details/hooks/use-get-article-by-id";
+import React, { useState } from "react";
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import ErrorState from "../../../components/Error-state";
 import LoadingState from "../../../components/loading-state";
+import { color } from "../../../constants/colors";
+import DeleteArticleDrawer from "../../../feature/created-article-details/_components/delete-article-drawer";
+import Header from "../../../feature/created-article-details/_components/header";
+import { useGetArticleById } from "../../../global-api-function/hooks/use-get-article-by-id";
+import MarkdownContent from "../../../components/markdown-content";
 
 
 
@@ -59,110 +59,10 @@ const ArticleDetails = () => {
                                 <Text style={styles.badgeText}>{article.category}</Text>
                             </TouchableOpacity>
 
-                            <Markdown
-                                style={{
-                                    body: {
-                                        fontFamily: "Jakarta",
-                                        color: color.secondary[900],
-                                        fontSize: 16,
-                                        lineHeight: 26, // More comfortable paragraph spacing
-                                    },
-                                    heading1: {
-                                        fontFamily: "Jakarta-ExtraBold",
-                                        fontSize: 28,
-                                        lineHeight: 36,
-                                        color: color.secondary[900],
-                                        marginTop: 24,
-                                        marginBottom: 12,
-                                    },
-                                    heading2: {
-                                        fontFamily: "Jakarta-Bold",
-                                        fontSize: 24,
-                                        lineHeight: 32,
-                                        color: color.secondary[800],
-                                        marginTop: 20,
-                                        marginBottom: 10,
-                                    },
-                                    heading3: {
-                                        fontFamily: "Jakarta-SemiBold",
-                                        fontSize: 20,
-                                        lineHeight: 28,
-                                        color: color.secondary[700],
-                                        marginTop: 18,
-                                        marginBottom: 8,
-                                    },
-                                    paragraph: {
-                                        fontFamily: "Jakarta-Medium",
-                                        color: color.secondary[800],
-                                        fontSize: 16,
-                                        lineHeight: 26,
-                                        marginBottom: 10,
-                                    },
-                                    strong: {
-                                        fontFamily: "Jakarta-Bold",
-                                        color: color.secondary[900],
-                                        lineHeight: 24,
-                                    },
-                                    em: {
-                                        fontFamily: "Jakarta-Medium",
-                                        color: color.secondary[700],
-                                        fontStyle: "italic",
-                                        lineHeight: 24,
-                                    },
-                                    link: {
-                                        color: "#007aff",
-                                        fontFamily: "Jakarta-SemiBold",
-                                        textDecorationLine: "underline",
-                                        lineHeight: 24,
-                                    },
-                                    list_item: {
-                                        flexDirection: "row",
-                                        marginVertical: 6,
-                                        lineHeight: 24,
-                                    },
-                                    bullet_list: {
-                                        paddingLeft: 22,
-                                    },
-                                    ordered_list: {
-                                        paddingLeft: 22,
-                                    },
-                                    code_inline: {
-                                        backgroundColor: color.secondary[200],
-                                        color: color.secondary[900],
-                                        fontFamily: "Jakarta-Medium",
-                                        paddingHorizontal: 6,
-                                        paddingVertical: 3,
-                                        borderRadius: 6,
-                                        lineHeight: 20,
-                                    },
-                                    code_block: {
-                                        backgroundColor: color.secondary[200],
-                                        color: color.secondary[900],
-                                        fontFamily: "Jakarta-Medium",
-                                        fontSize: 14,
-                                        lineHeight: 22,
-                                        padding: 12,
-                                        borderRadius: 8,
-                                        marginVertical: 10,
-                                    },
-                                    blockquote: {
-                                        borderLeftWidth: 4,
-                                        borderLeftColor: color.secondary[500],
-                                        paddingLeft: 12,
-                                        color: color.secondary[700],
-                                        fontStyle: "italic",
-                                        lineHeight: 24,
-                                        marginVertical: 10,
-                                    },
-                                    hr: {
-                                        backgroundColor: color.secondary[300],
-                                        height: 1,
-                                        marginVertical: 14,
-                                    },
-                                }}
-                            >
+
+                            <MarkdownContent>
                                 {article.ai_generated_content}
-                            </Markdown>
+                            </MarkdownContent>
                         </View>
                     )}
                 </SafeAreaView>
@@ -231,6 +131,4 @@ const styles = StyleSheet.create({
         fontFamily: "Jakarta-SemiBold",
         color : color.primary[800],
     },
-
-
 });
