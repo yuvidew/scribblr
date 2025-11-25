@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { followUser } from "../api-functions";
+import { followUser } from "..";
+
 
 export const useFollowUser = () => {
     const queryClient = useQueryClient();
@@ -8,7 +9,12 @@ export const useFollowUser = () => {
         mutationKey : ["follow-user"],
         mutationFn : followUser,
         onSuccess : () => {
-            queryClient.invalidateQueries({ queryKey : ["get-all-users"] })
+            const keys = [
+                ["get-all-users"],
+                ["get-article-by-id"],
+            ];
+
+            keys.forEach((key) => queryClient.invalidateQueries({ queryKey: key }));
         }
     });
 };

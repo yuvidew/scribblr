@@ -14,7 +14,7 @@ export const onCreateArticle = async (formData: CreateArticleType) => {
             Toast.show({
                 type: "success",
                 text1: data.message
-            });
+            })
 
             
             return data;

@@ -16,14 +16,14 @@ import Spinner from '../../components/Spinner';
 import { color } from '../../constants/colors';
 import { icons } from '../../constants/icons';
 import BackArrowProgressBar from '../../feature/auth/_components/back-arrow-progressbar';
-import { useFollowUser } from '../../feature/auth/hook/use-follow-user';
 import { useGetAllUsers } from '../../feature/auth/hook/use-get-all-users';
+import { useFollowUser } from '../../global-api-function/hooks/use-follow-user';
 
 
 
 const FollowPeople = () => {
     const { data: users, isLoading } = useGetAllUsers();
-    const { mutate: onFollowUser } = useFollowUser()
+    const { mutate: onFollowUser } = useFollowUser();
     const [showSuccess, setShowSuccess] = useState(false);
     const [count , setCount] = useState(0);
 

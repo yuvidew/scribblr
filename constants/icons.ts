@@ -41,7 +41,9 @@ const menuIcon = require("@/assets/icons/menu.png");
 
 const deleteIcon = require("@/assets/icons/delete.png");
 
-const alertIcon = require("@/assets/icons/alert.png")
+const alertIcon = require("@/assets/icons/alert.png");
+
+const moreIcon = require("@/assets/icons/more.png")
 
 export const icons = {
     loader,
@@ -79,5 +81,6 @@ export const icons = {
     grid4Icon,
     menuIcon,
     deleteIcon,
-    alertIcon
+    alertIcon,
+    moreIcon
 }

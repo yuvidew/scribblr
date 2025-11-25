@@ -137,6 +137,10 @@ export type ArticleResponse = {
             id: number;
             name: string;
             profile_image: string;
+            followings : number;
+            followers : number;
+            im_following : boolean
+            im_my : boolean
         };
     };
 };

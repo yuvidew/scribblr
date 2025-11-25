@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query"
-import { getArticleById } from "../api-function"
+import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
+import { getArticleById } from "..";
 
 export const useGetArticleById = () => {
     const { id } = useLocalSearchParams();
